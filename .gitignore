@@ -19,3 +19,12 @@ yarn-error.log*
 *.njsproj
 *.sln
 *.sw*
+
+# amplify
+amplify/\#current-cloud-backend
+amplify/.config/local-*
+amplify/backend/
+amplify/team-provider-info.json
+build/
+aws-exports.js
+awsconfiguration.json
