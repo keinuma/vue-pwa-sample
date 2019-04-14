@@ -45,6 +45,8 @@
 </template>
 
 <script>
+import { mapGetters } from "vuex";
+
 export default {
   name: "Login",
   data() {
@@ -52,6 +54,15 @@ export default {
       email: "",
       password: ""
     };
+  },
+  computed: {
+    ...mapGetters("auth", ["username"])
+  },
+  created() {
+    this.$store.dispatch("auth/currentUser").catch();
+    if (this.username) {
+      this.$router.push("/users");
+    }
   },
   methods: {
     onClickLogin: function() {
@@ -61,7 +72,7 @@ export default {
           password: this.password
         })
         .then(() => {
-          console.log("success");
+          this.$router.push("/users");
         });
     }
   }
