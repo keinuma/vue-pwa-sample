@@ -21,10 +21,22 @@
               placeholder="パスワードを入力してください"
             />
           </div>
-          <div>
+          <div class="mod-form-item">
             <button class="form-submit mod-submit" @click="onClickLogin">
               ログイン
             </button>
+          </div>
+          <div>
+            <div class="mod-form-link">
+              <router-link class="mod-link" to="/signUp">
+                新規登録はこちら
+              </router-link>
+            </div>
+            <div class="mod-form-link">
+              <router-link class="mod-link" to="/signUp">
+                パスワードをお忘れの方はこちら
+              </router-link>
+            </div>
           </div>
         </div>
       </section>
@@ -35,6 +47,12 @@
 <script>
 export default {
   name: "Login",
+  data() {
+    return {
+      email: "",
+      password: ""
+    };
+  },
   methods: {
     onClickLogin: function() {
       this.$store
@@ -50,4 +68,14 @@ export default {
 };
 </script>
 
-<style scoped></style>
+<style lang="scss" scoped>
+@import "~@/assets/css/imports.scss";
+.form-label {
+  color: $base-label-color;
+}
+
+.form-submit {
+  background-color: #daa520;
+  color: white;
+}
+</style>

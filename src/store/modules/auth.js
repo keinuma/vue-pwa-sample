@@ -27,11 +27,8 @@ const actions = {
   },
   login: function({ commit }, { email, password }) {
     Auth.signIn({
-      email,
-      password,
-      attributes: {
-        email
-      }
+      username: email,
+      password
     }).then(() => {
       commit(types.SET_LOGGED_IN);
     });

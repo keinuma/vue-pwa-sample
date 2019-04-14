@@ -21,10 +21,17 @@
               placeholder="パスワードを入力してください"
             />
           </div>
-          <div>
+          <div class="mod-form-item">
             <button class="form-submit mod-submit" @click="onClickSignUp">
               登録
             </button>
+          </div>
+          <div>
+            <div class="mod-form-link">
+              <router-link class="mod-link" to="/login">
+                アカウントをお持ちの方はこちら
+              </router-link>
+            </div>
           </div>
         </div>
       </section>

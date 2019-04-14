@@ -33,3 +33,19 @@
   border-radius: 4px;
   cursor: pointer;
 }
+
+.mod-form-link {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  border: 1px solid #9c855b;
+  border-radius: 3px;
+  padding: 0.5rem;
+  text-align: center;
+  margin-bottom: 1rem;
+}
+
+.mod-link {
+  text-decoration: none;
+  color: #9c855b;
+}
