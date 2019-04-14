@@ -10,7 +10,7 @@ projects:
         codeGenTarget: javascript
         generatedFileName: ''
         docsFilePath: src/graphql
-        graphQLApiId: cy4r3k4clbgx5kwyuikvxraoha
+        graphQLApiId: oizw6kjwqrahznx5ubfs3mrjfm
       endpoints:
         prod: >-
-          https://x4gsffnedfhr5n7phfq6ss6yem.appsync-api.ap-northeast-1.amazonaws.com/graphql
+          https://qxmdtsfhwrb45kdwdcevpcrsky.appsync-api.ap-northeast-1.amazonaws.com/graphql

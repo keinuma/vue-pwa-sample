@@ -22,8 +22,8 @@
             />
           </div>
           <div>
-            <button class="form-submit mod-submit" @click="onClickSignUp">
-              登録
+            <button class="form-submit mod-submit" @click="onClickLogin">
+              ログイン
             </button>
           </div>
         </div>
@@ -34,17 +34,11 @@
 
 <script>
 export default {
-  name: "SignUp",
-  data() {
-    return {
-      email: "",
-      password: ""
-    };
-  },
+  name: "Login",
   methods: {
-    onClickSignUp: function() {
+    onClickLogin: function() {
       this.$store
-        .dispatch("auth/signUp", {
+        .dispatch("auth/login", {
           email: this.email,
           password: this.password
         })
@@ -56,14 +50,4 @@ export default {
 };
 </script>
 
-<style lang="scss" scoped>
-@import "~@/assets/css/imports.scss";
-.form-label {
-  color: $base-label-color;
-}
-
-.form-submit {
-  background-color: #daa520;
-  color: white;
-}
-</style>
+<style scoped></style>

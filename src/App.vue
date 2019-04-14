@@ -6,7 +6,7 @@
 </template>
 
 <script>
-import ChatHeader from "@/components/ChatHeader"
+import ChatHeader from "@/components/ChatHeader";
 
 export default {
   name: "App",

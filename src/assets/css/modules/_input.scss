@@ -1,0 +1,35 @@
+.mod-form {
+  display: flex;
+  flex-direction: column;
+}
+
+.mod-form-item {
+  margin-bottom: 2em;
+}
+
+.mod-input {
+  width: 100%;
+  border: 1px solid #ccc;
+  border-radius: 3px;
+  font-size: 1.3rem;
+  padding: 10px;
+  color: #333;
+  &::placeholder {
+    color: #b4b4b4;
+  }
+}
+
+.mod-input-text {
+  margin-bottom: 5px;
+}
+
+.mod-submit {
+  font-weight: 400;
+  padding: 0.8em;
+  margin-top: 1em;
+  text-align: center;
+  width: 100%;
+  font-size: 16px;
+  border-radius: 4px;
+  cursor: pointer;
+}
