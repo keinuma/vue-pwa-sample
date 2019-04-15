@@ -28,31 +28,33 @@ const mutations = {
 
 const actions = {
   async currentUser({ commit }) {
-    const user = await Auth.currentAuthenticatedUser().catch();
+    const user = await Auth.currentAuthenticatedUser().catch(() => {
+      commit(types.SET_CURRENT_USER, null);
+    });
     commit(types.SET_CURRENT_USER, user);
   },
-  signUp: function({ commit }, { email, password }) {
-    Auth.signUp({
+  async signUp({ commit }, { email, password }) {
+    const user = await Auth.signUp({
       username: email,
       password,
       attributes: {
         email
       }
-    }).then(() => {
-      commit(types.SET_LOGGED_IN);
     });
+    commit(types.SET_CURRENT_USER, user);
   },
   async login({ commit }, { email, password }) {
     const user = await Auth.signIn({
       username: email,
       password
+    }).catch(() => {
+      commit(types.SET_CURRENT_USER, null);
     });
     commit(types.SET_CURRENT_USER, user);
   },
   async logout({ commit }) {
-    await Auth.signOut().then(() => {
-      commit(types.SET_CURRENT_USER, null);
-    });
+    await Auth.signOut();
+    commit(types.SET_CURRENT_USER, null);
   }
 };
 

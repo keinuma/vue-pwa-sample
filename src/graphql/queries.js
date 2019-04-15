@@ -43,9 +43,6 @@ export const listUsers = `query ListUsers(
       conversations {
         nextToken
       }
-      messages {
-        nextToken
-      }
       createdAt
       updatedAt
     }
