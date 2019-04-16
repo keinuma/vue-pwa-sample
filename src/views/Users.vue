@@ -4,7 +4,7 @@
       <section>
         <div class="heading">Users</div>
         <div class="user-container">
-          <div v-for="user in users" :key="user.id" class="user">
+          <div v-for="user in filteredUsers" :key="user.id" class="user">
             <font-awesome-icon icon="user" class="fa-2x"></font-awesome-icon>
             <p class="username">{{ user.username }}</p>
             <div class="add-icon">
@@ -20,6 +20,7 @@
 
 <script>
 import gql from "graphql-tag";
+import { mapGetters } from "vuex";
 import { listUsers } from "@/graphql/queries";
 
 export default {
@@ -44,6 +45,17 @@ export default {
     this.$store.dispatch("auth/currentUser").catch(() => {
       this.$router.push("/login");
     });
+  },
+  computed: {
+    ...mapGetters("auth", ["username"]),
+    filteredUsers: function() {
+      if (this.username === null || this.users === []) {
+        return;
+      }
+      return this.users.filter(user => {
+        return this.username !== user.id;
+      });
+    }
   },
   methods: {
     onClickLogout() {

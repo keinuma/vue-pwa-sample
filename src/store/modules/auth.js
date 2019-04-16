@@ -10,7 +10,7 @@ const state = {
 
 const getters = {
   username: state => {
-    if (typeof state.currentUser === "object") {
+    if (state.currentUser !== null) {
       return state.currentUser.username;
     }
     return null;
