@@ -81,3 +81,29 @@ export const getConvo = `query GetConvo($id: ID!) {
   }
 }
 `;
+
+export const getUserAndConversations = `
+  query getUserAndConversations($id:ID!) {
+    getUser(id:$id) {
+      id
+      username
+      conversations(limit: 100) {
+        items {
+          id
+          conversation {
+            id
+            name
+            members
+            associated {
+              items {
+                user {
+                  username
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  }
+`;

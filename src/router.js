@@ -36,6 +36,11 @@ export default new Router({
       path: "/users",
       name: "users",
       component: () => import("./views/Users.vue")
+    },
+    {
+      path: "/convos",
+      name: "convos",
+      component: () => import("./views/Convos.vue")
     }
   ]
 });
