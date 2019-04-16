@@ -48,12 +48,14 @@ const actions = {
       username: email,
       password
     }).catch(() => {
-      commit(types.SET_CURRENT_USER, null);
+      return null;
     });
     commit(types.SET_CURRENT_USER, user);
   },
   async logout({ commit }) {
-    await Auth.signOut();
+    await Auth.signOut().catch(() => {
+      console.log("error in sign out");
+    });
     commit(types.SET_CURRENT_USER, null);
   }
 };

@@ -65,8 +65,6 @@ export default {
 }
 
 .user-container {
-  border-radius: 10px;
-  background-color: $base-background;
   margin: 0 10px;
 }
 
@@ -75,6 +73,9 @@ export default {
   align-items: center;
   padding: 10px;
   color: $base-label-color;
+  margin-bottom: 10px;
+  background-color: $base-background;
+  border-radius: 10px;
 }
 
 .username {

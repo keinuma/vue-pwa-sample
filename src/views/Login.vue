@@ -46,6 +46,9 @@
 
 <script>
 import { mapGetters } from "vuex";
+import gql from "graphql-tag";
+import { getUser } from "@/graphql/queries";
+import { createUser } from "@/graphql/mutations";
 
 export default {
   name: "Login",
@@ -76,8 +79,30 @@ export default {
           password: this.password
         })
         .then(() => {
+          this.checkIfUserExists(this.username, this.email).catch();
           this.$router.push("/users");
+        })
+        .catch();
+    },
+    checkIfUserExists: async function(id, email) {
+      const response = await this.$apollo
+        .query({
+          query: gql(getUser),
+          variables: { id }
+        })
+        .catch(err => {
+          console.log(err);
         });
+      if (response.data.getUser === null) {
+        this.$apollo.mutate({
+          mutation: gql(createUser),
+          variables: {
+            input: {
+              username: email
+            }
+          }
+        });
+      }
     }
   }
 };

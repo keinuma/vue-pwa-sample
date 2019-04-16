@@ -1,6 +1,6 @@
 <template>
   <div class="container">
-    <router-link class="wrapper" to="/">
+    <router-link class="wrapper" to="/users">
       <img class="logo" alt="Logo" :src="logoPath" />
       <h2 class="header-title">チャットアプリ</h2>
       <div v-if="isLogoutDisplayed" @click="onClickSignOut" class="sign-out">
