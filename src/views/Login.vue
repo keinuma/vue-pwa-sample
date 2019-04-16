@@ -59,10 +59,14 @@ export default {
     ...mapGetters("auth", ["username"])
   },
   created() {
-    this.$store.dispatch("auth/currentUser").catch();
-    if (this.username) {
-      this.$router.push("/users");
-    }
+    this.$store
+      .dispatch("auth/currentUser")
+      .then(() => {
+        if (this.username) {
+          this.$router.push("/users");
+        }
+      })
+      .catch();
   },
   methods: {
     onClickLogin: function() {

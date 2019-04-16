@@ -3,6 +3,12 @@
     <router-link class="wrapper" to="/">
       <img class="logo" alt="Logo" :src="logoPath" />
       <h2 class="header-title">チャットアプリ</h2>
+      <div v-if="isLogoutDisplayed" @click="onClickSignOut" class="sign-out">
+        <font-awesome-icon
+          icon="sign-out-alt"
+          class="fa-1x"
+        ></font-awesome-icon>
+      </div>
     </router-link>
   </div>
 </template>
@@ -14,6 +20,17 @@ export default {
     return {
       logoPath: require("@/assets/logo.png")
     };
+  },
+  computed: {
+    isLogoutDisplayed: function() {
+      return !["login", "signUp"].includes(this.$route.name);
+    }
+  },
+  methods: {
+    onClickSignOut: function() {
+      this.$store.dispatch("auth/logout").catch();
+      this.$router.push("/login");
+    }
   }
 };
 </script>
@@ -23,13 +40,9 @@ export default {
 
 .container {
   background-color: $base-background;
-  align-items: center;
-  width: 100%;
-  display: flex;
 }
 .wrapper {
   display: flex;
-  justify-content: center;
   align-items: center;
   text-decoration: none;
 }
@@ -38,5 +51,9 @@ export default {
 }
 .header-title {
   display: flex;
+}
+.sign-out {
+  margin-left: auto;
+  margin-right: 20px;
 }
 </style>

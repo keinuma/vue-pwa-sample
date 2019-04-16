@@ -13,6 +13,7 @@
           </div>
         </div>
       </section>
+      <section class="modal"></section>
     </main>
   </div>
 </template>
