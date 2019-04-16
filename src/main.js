@@ -5,10 +5,15 @@ import store from "./store/index";
 import "./registerServiceWorker";
 
 import { library } from "@fortawesome/fontawesome-svg-core";
-import { faUser, faPlus, faSignOutAlt } from "@fortawesome/free-solid-svg-icons";
+import {
+  faUser,
+  faPlus,
+  faSignOutAlt,
+  faTimes
+} from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/vue-fontawesome";
 
-library.add(faUser, faPlus, faSignOutAlt);
+library.add(faUser, faPlus, faSignOutAlt, faTimes);
 Vue.component("font-awesome-icon", FontAwesomeIcon);
 
 import Amplify, * as AmplifyModules from "aws-amplify";

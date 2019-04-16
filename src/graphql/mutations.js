@@ -239,9 +239,6 @@ export const createConvoLink = `mutation CreateConvoLink($input: CreateConvoLink
       conversations {
         nextToken
       }
-      messages {
-        nextToken
-      }
       createdAt
       updatedAt
     }

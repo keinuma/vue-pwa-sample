@@ -14,6 +14,12 @@ const getters = {
       return state.currentUser.username;
     }
     return null;
+  },
+  email: state => {
+    if (state.currentUser !== null) {
+      return state.currentUser.signInUserSession.idToken.payload.email;
+    }
+    return null;
   }
 };
 
