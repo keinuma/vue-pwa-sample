@@ -2,7 +2,7 @@
   <div>
     <main>
       <section>
-        <div class="heading">Users</div>
+        <div class="heading">ユーザー一覧</div>
         <div class="user-container">
           <div
             @click="checkConversion(user)"
@@ -67,8 +67,14 @@ export default {
       variables() {
         return { filter: null, limit: 30, nextToken: null };
       },
-      update: data => {
+      update(data) {
         return data.listUsers.items;
+      },
+      error(error) {
+        if (error.networkError.statusCode === 401) {
+          console.log("error!");
+          this.$router.push("/login");
+        }
       }
     }
   },
@@ -139,9 +145,9 @@ export default {
 <style lang="scss" scoped>
 @import "~@/assets/css/imports.scss";
 .heading {
-  font-size: 1.8rem;
+  font-size: 1.6rem;
   color: $base-label-color;
-  margin: 10px;
+  margin: 15px;
   border-bottom: 2px solid $base-background;
 }
 

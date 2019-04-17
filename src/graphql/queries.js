@@ -97,6 +97,7 @@ export const getUserAndConversations = `
             associated {
               items {
                 user {
+                  id
                   username
                 }
               }

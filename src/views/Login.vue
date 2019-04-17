@@ -59,7 +59,7 @@ export default {
     };
   },
   computed: {
-    ...mapGetters("auth", ["username"])
+    ...mapGetters("auth", ["username", "nickname"])
   },
   created() {
     this.$store
@@ -79,12 +79,12 @@ export default {
           password: this.password
         })
         .then(() => {
-          this.checkIfUserExists(this.username, this.email).catch();
+          this.checkIfUserExists(this.username).catch();
           this.$router.push("/users");
         })
         .catch();
     },
-    checkIfUserExists: async function(id, email) {
+    checkIfUserExists: async function(id) {
       const response = await this.$apollo
         .query({
           query: gql(getUser),
@@ -98,7 +98,7 @@ export default {
           mutation: gql(createUser),
           variables: {
             input: {
-              username: email
+              username: this.nickname
             }
           }
         });

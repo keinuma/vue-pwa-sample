@@ -2,16 +2,16 @@
   <div>
     <main>
       <section>
-        <div class="heading">Conversations</div>
-        <div class="user-container">
+        <div class="heading">会話一覧</div>
+        <div class="convo-container">
           <div
             @click="checkConversion(user)"
             v-for="convo in convos"
             :key="convo.id"
-            class="user"
+            class="convo"
           >
-            <font-awesome-icon icon="user" class="fa-2x"></font-awesome-icon>
-            <p class="username">{{ convo.username }}</p>
+            <font-awesome-icon icon="comment" class="fa-2x"></font-awesome-icon>
+            <p class="username">{{ getUsername(convo) }}</p>
             <div class="add-icon">
               <font-awesome-icon icon="plus" class="fa-1x"></font-awesome-icon>
             </div>
@@ -55,32 +55,41 @@ export default {
     });
   },
   computed: {
-    ...mapGetters("auth", ["username"])
+    ...mapGetters("auth", ["username", "nickname"])
   },
-  methods: {}
+  methods: {
+    getUsername(convo) {
+      if (convo === null) {
+        return "";
+      }
+      return convo.conversation.associated.items.find(response => {
+        return response.user.id !== this.username;
+      }).user.username;
+    }
+  }
 };
 </script>
 
 <style lang="scss" scoped>
 @import "~@/assets/css/imports.scss";
 .heading {
-  font-size: 1.8rem;
+  font-size: 1.6rem;
   color: $base-label-color;
-  margin: 10px;
+  margin: 15px;
   border-bottom: 2px solid $base-background;
 }
 
-.user-container {
+.convo-container {
   margin: 0 10px;
 }
 
-.user {
+.convo {
   display: flex;
   align-items: center;
   padding: 10px;
   color: $base-label-color;
   margin-bottom: 10px;
-  background-color: $base-background;
+  background-color: #ffff99;
   border-radius: 10px;
 }
 

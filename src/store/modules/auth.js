@@ -17,7 +17,13 @@ const getters = {
   },
   email: state => {
     if (state.currentUser !== null) {
-      return state.currentUser.signInUserSession.idToken.payload.email;
+      return state.currentUser.attributes.email;
+    }
+    return null;
+  },
+  nickname: state => {
+    if (state.currentUser !== null) {
+      return state.currentUser.attributes.nickname;
     }
     return null;
   }
@@ -36,6 +42,7 @@ const actions = {
   async currentUser({ commit }) {
     const user = await Auth.currentAuthenticatedUser().catch(() => {
       commit(types.SET_CURRENT_USER, null);
+      throw Error;
     });
     commit(types.SET_CURRENT_USER, user);
   },
@@ -44,7 +51,8 @@ const actions = {
       username: email,
       password,
       attributes: {
-        email
+        email,
+        nickname: email
       }
     });
     commit(types.SET_CURRENT_USER, user);
