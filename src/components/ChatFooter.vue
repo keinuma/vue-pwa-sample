@@ -18,7 +18,6 @@ export default {
   },
   computed: {
     isFooterDisplayed: function() {
-      console.log(!["login", "signUp"].includes(this.$route.name));
       return !["login", "signUp"].includes(this.$route.name);
     }
   },

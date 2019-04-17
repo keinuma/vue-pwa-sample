@@ -55,9 +55,7 @@ export default {
           email: this.email,
           password: this.password
         })
-        .then(() => {
-          console.log("success");
-        });
+        .catch();
     }
   }
 };

@@ -72,7 +72,6 @@ export default {
       },
       error(error) {
         if (error.networkError.statusCode === 401) {
-          console.log("error!");
           this.$router.push("/login");
         }
       }
