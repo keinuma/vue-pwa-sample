@@ -5,7 +5,7 @@
         <div class="heading">会話一覧</div>
         <div class="convo-container">
           <div
-            @click="checkConversion(user)"
+            @click="getConvo(convo)"
             v-for="convo in convos"
             :key="convo.id"
             class="convo"
@@ -65,6 +65,12 @@ export default {
       return convo.conversation.associated.items.find(response => {
         return response.user.id !== this.username;
       }).user.username;
+    },
+    getConvo(convo) {
+      this.$router.push({
+        name: "convo",
+        params: { id: convo.conversation.id }
+      });
     }
   }
 };

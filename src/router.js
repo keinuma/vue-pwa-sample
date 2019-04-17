@@ -30,6 +30,11 @@ export default new Router({
       path: "/convos",
       name: "convos",
       component: () => import("./views/Convos.vue")
+    },
+    {
+      path: "/convos/:id",
+      name: "convo",
+      component: () => import("./views/Messages.vue")
     }
   ]
 });

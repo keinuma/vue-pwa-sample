@@ -1,10 +1,8 @@
 <template>
   <footer v-if="isFooterDisplayed">
-    <div class="footer-container">
-      <router-link class="footer-link" to="/users">ユーザー一覧</router-link>
-      <router-link class="footer-link" to="/convos">会話一覧</router-link>
-      <router-link class="footer-link" to="/profile">プロフィール</router-link>
-    </div>
+    <router-link class="footer-link" to="/users">ユーザー一覧</router-link>
+    <router-link class="footer-link" to="/convos">会話一覧</router-link>
+    <router-link class="footer-link" to="/profile">プロフィール</router-link>
   </footer>
 </template>
 
@@ -30,7 +28,7 @@ export default {
 };
 </script>
 
-<style lang="scss">
+<style lang="scss" scoped>
 @import "~@/assets/css/imports.scss";
 
 footer {
@@ -39,14 +37,11 @@ footer {
   left: 0;
   bottom: 0;
   display: flex;
-  width: 100%;
-  background-color: $base-color;
-}
-.footer-container {
-  display: flex;
   justify-content: space-around;
   align-items: center;
-  text-decoration: none;
+  width: 100%;
+  background-color: $base-background;
+  border-top: 1px solid $base-color;
 }
 .footer-link {
   text-decoration: none;
