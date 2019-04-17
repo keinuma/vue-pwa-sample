@@ -125,19 +125,6 @@ export const createConvo = `mutation CreateConvo($input: CreateConversationInput
 export const createMessage = `mutation CreateMessage($input: CreateMessageInput!) {
   createMessage(input: $input) {
     id
-    author {
-      id
-      username
-      conversations {
-        nextToken
-      }
-      messages {
-        nextToken
-      }
-      createdAt
-      updatedAt
-    }
-    authorId
     content
     conversation {
       id

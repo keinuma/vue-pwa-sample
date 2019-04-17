@@ -10,11 +10,12 @@ import {
   faPlus,
   faSignOutAlt,
   faTimes,
-  faComment
+  faComment,
+  faPaperPlane
 } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/vue-fontawesome";
 
-library.add(faUser, faPlus, faSignOutAlt, faTimes, faComment);
+library.add(faUser, faPlus, faSignOutAlt, faTimes, faComment, faPaperPlane);
 Vue.component("font-awesome-icon", FontAwesomeIcon);
 
 import Amplify, * as AmplifyModules from "aws-amplify";

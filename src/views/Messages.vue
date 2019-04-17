@@ -3,7 +3,17 @@
     {{ messages }}
     <div class="input-container">
       <label></label>
-      <input class="message-input" placeholder="テキスト" v-model="content" />
+      <input
+        class="input-text"
+        type="text"
+        placeholder="テキスト"
+        v-model="content"
+      />
+      <font-awesome-icon
+        @click="sendMessage"
+        icon="paper-plane"
+        class="fa-2x send-icon"
+      ></font-awesome-icon>
     </div>
   </div>
 </template>
@@ -12,6 +22,7 @@
 import gql from "graphql-tag";
 import { mapGetters } from "vuex";
 import { getConvo } from "@/graphql/queries";
+import { createMessage } from "@/graphql/mutations";
 
 export default {
   name: "Messages",
@@ -34,6 +45,23 @@ export default {
   },
   computed: {
     ...mapGetters("auth", ["username", "nickname"])
+  },
+  methods: {
+    async sendMessage() {
+      if (this.content === "") return;
+      const response = await this.$apollo.mutate({
+        mutation: gql(createMessage),
+        variables: {
+          input: {
+            authorId: this.username,
+            content: this.content,
+            messageConversationId: this.$route.params.id
+          }
+        }
+      });
+      console.log(response);
+      this.content = "";
+    }
   }
 };
 </script>
@@ -44,14 +72,17 @@ export default {
   position: absolute;
   bottom: 50px;
   left: 0;
-}
-.message-input {
-  height: 45px;
-  outline: none;
-  border: 2px solid #ededed;
-  border-radius: 30px;
-  margin: 5px;
-  padding: 0 20px;
-  width: 90%;
+  .input-text {
+    height: 45px;
+    outline: none;
+    border: 2px solid #ededed;
+    border-radius: 30px;
+    margin: 10px;
+    padding: 0 20px;
+    width: 85%;
+  }
+  .send-icon {
+    vertical-align: -0.3em;
+  }
 }
 </style>
