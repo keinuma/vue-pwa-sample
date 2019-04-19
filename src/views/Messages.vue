@@ -1,6 +1,11 @@
 <template>
   <div>
-    {{ messages }}
+    <div class="message-container">
+      <div :key="message.id" v-for="message in messages">
+        <p class="message">{{ message.content }}</p>
+      </div>
+      <div class="scroller"></div>
+    </div>
     <div class="input-container">
       <label></label>
       <input
@@ -67,6 +72,19 @@ export default {
 </script>
 
 <style lang="scss" scoped>
+.message-container {
+  overflow: scroll;
+}
+.message {
+  background-color: #ededed;
+  margin: 10px;
+  padding: 20px;
+  border-radius: 10px;
+}
+.scroller {
+  float: left;
+  clear: both;
+}
 .input-container {
   width: 100%;
   position: absolute;
