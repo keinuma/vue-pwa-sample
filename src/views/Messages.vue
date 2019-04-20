@@ -2,7 +2,9 @@
   <div>
     <div class="message-container">
       <div :key="message.id" v-for="message in messages">
-        <p class="message">{{ message.content }}</p>
+        <p class="message" :class="{ 'sender-message': isSenderOwn(message) }">
+          {{ message.content }}
+        </p>
       </div>
       <div class="scroller"></div>
     </div>
@@ -51,6 +53,11 @@ export default {
   computed: {
     ...mapGetters("auth", ["username", "nickname"])
   },
+  created() {
+    this.$store.dispatch("auth/currentUser").catch(() => {
+      this.$router.push("/login");
+    });
+  },
   methods: {
     async sendMessage() {
       if (this.content === "") return;
@@ -66,12 +73,16 @@ export default {
       });
       console.log(response);
       this.content = "";
+    },
+    isSenderOwn(message) {
+      return message.authorId === this.username;
     }
   }
 };
 </script>
 
 <style lang="scss" scoped>
+@import "~@/assets/css/imports.scss";
 .message-container {
   overflow: scroll;
 }
@@ -80,6 +91,11 @@ export default {
   margin: 10px;
   padding: 20px;
   border-radius: 10px;
+}
+.sender-message {
+  background-color: #ffff99;
+  margin-left: 50px;
+  color: $base-label-color;
 }
 .scroller {
   float: left;
