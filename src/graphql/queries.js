@@ -42,6 +42,10 @@ export const listUsers = `query ListUsers(
       username
       conversations {
         nextToken
+        items {
+          convoLinkConversationId
+          convoLinkUserId
+        }
       }
       createdAt
       updatedAt

@@ -100,9 +100,15 @@ export default {
       });
     },
     checkConversion(user) {
-      if (user.conversations.nextToken === null) {
+      console.log(user.conversations.items.length);
+      if (user.conversations.items.length === 0) {
         this.isModal = true;
         this.selectedUser = user;
+      } else {
+        this.$router.push({
+          name: "convo",
+          params: { id: user.conversations.items[0].convoLinkConversationId }
+        });
       }
     },
     async onClickStartConversion() {
