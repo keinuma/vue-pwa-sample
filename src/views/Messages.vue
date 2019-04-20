@@ -30,6 +30,7 @@ import gql from "graphql-tag";
 import { mapGetters } from "vuex";
 import { getConvo } from "@/graphql/queries";
 import { createMessage } from "@/graphql/mutations";
+import { onCreateMessage } from "@/graphql/subscriptions";
 
 export default {
   name: "Messages",
@@ -57,6 +58,19 @@ export default {
     this.$store.dispatch("auth/currentUser").catch(() => {
       this.$router.push("/login");
     });
+    this.$apollo
+      .subscribe({
+        query: gql(onCreateMessage),
+        variables: {
+          messageConversationId: this.$route.params.id
+        }
+      })
+      .subscribe({
+        next: response => {
+          console.log(response);
+          this.messages = [...this.messages, response.data.onCreateMessage];
+        }
+      });
   },
   methods: {
     async sendMessage() {
@@ -85,6 +99,7 @@ export default {
 @import "~@/assets/css/imports.scss";
 .message-container {
   overflow: scroll;
+  height: 75vh;
 }
 .message {
   background-color: #ededed;
