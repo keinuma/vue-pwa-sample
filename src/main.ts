@@ -24,7 +24,7 @@ import AWSAppSyncClient from "aws-appsync";
 import VueApollo from "vue-apollo";
 import AWSConfig from "./aws-exports";
 
-const config = {
+const client = new AWSAppSyncClient({
   url: AWSConfig.aws_appsync_graphqlEndpoint,
   region: AWSConfig.aws_appsync_region,
   auth: {
@@ -32,16 +32,7 @@ const config = {
     jwtToken: async () =>
       (await AmplifyModules.Auth.currentSession()).getIdToken().getJwtToken()
   }
-};
-const options = {
-  defaultOptions: {
-    watchQuery: {
-      fetchPolicy: "cache-and-network"
-    }
-  }
-};
-
-const client = new AWSAppSyncClient(config, options);
+});
 
 const apolloProvider = new VueApollo({
   defaultClient: client

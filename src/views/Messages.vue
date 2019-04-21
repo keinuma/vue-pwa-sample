@@ -25,56 +25,29 @@
   </div>
 </template>
 
-<script>
+<script lang="ts">
 import gql from "graphql-tag";
-import { mapGetters } from "vuex";
+import { Vue, Component } from "vue-property-decorator";
+import { Getter } from "vuex-class";
 import { getConvo } from "@/graphql/queries";
 import { createMessage } from "@/graphql/mutations";
-import { onCreateMessage } from "@/graphql/subscriptions";
 
-export default {
-  name: "Messages",
-  data() {
-    return {
-      messages: [],
-      content: ""
-    };
-  },
-  apollo: {
-    messages: {
-      query: () => gql(getConvo),
-      variables() {
-        return { id: this.$route.params.id };
-      },
-      update: data => {
-        return data.getConvo.messages.items;
-      }
-    }
-  },
-  computed: {
-    ...mapGetters("auth", ["username", "nickname"])
-  },
-  created() {
+@Component({})
+export default class Messages extends Vue {
+  messages: string[] = [];
+  content: string = "";
+
+  created(): void {
     this.$store.dispatch("auth/currentUser").catch(() => {
       this.$router.push("/login");
     });
-    this.$apollo
-      .subscribe({
-        query: gql(onCreateMessage),
-        variables: {
-          messageConversationId: this.$route.params.id
-        }
-      })
-      .subscribe({
-        next: response => {
-          console.log(response);
-          this.messages = [...this.messages, response.data.onCreateMessage];
-        }
-      });
-  },
-  methods: {
-    async sendMessage() {
-      if (this.content === "") return;
+  }
+
+  @Getter("auth/username") username: string = "";
+  @Getter("auth/nickname") nickname: string = "";
+
+  async sendMessage(): Promise<any> {
+    if (this.content !== "") {
       const response = await this.$apollo.mutate({
         mutation: gql(createMessage),
         variables: {
@@ -85,14 +58,28 @@ export default {
           }
         }
       });
-      console.log(response);
       this.content = "";
-    },
-    isSenderOwn(message) {
-      return message.authorId === this.username;
     }
   }
-};
+
+  get apollo() {
+    return {
+      messages: {
+        query: () => gql(getConvo),
+        variables() {
+          return { id: this.$route.params.id };
+        },
+        update: data => {
+          return data.getConvo.messages.items;
+        }
+      }
+    };
+  }
+
+  isSenderOwn(message): boolean {
+    return message.authorId === this.username;
+  }
+}
 </script>
 
 <style lang="scss" scoped>

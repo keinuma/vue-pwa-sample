@@ -1,4 +1,4 @@
-// eslint-disable
+// tslint:disable
 // this is an auto generated file. This will be overwritten
 
 export const getUser = `query GetUser($id: ID!) {
@@ -6,24 +6,9 @@ export const getUser = `query GetUser($id: ID!) {
     id
     username
     conversations {
-      items {
-        id
-        convoLinkUserId
-        convoLinkConversationId
-        createdAt
-        updatedAt
-      }
       nextToken
     }
     messages {
-      items {
-        id
-        authorId
-        content
-        messageConversationId
-        createdAt
-        updatedAt
-      }
       nextToken
     }
     createdAt
@@ -40,13 +25,6 @@ export const listUsers = `query ListUsers(
     items {
       id
       username
-      conversations {
-        nextToken
-        items {
-          convoLinkConversationId
-          convoLinkUserId
-        }
-      }
       createdAt
       updatedAt
     }
@@ -58,24 +36,9 @@ export const getConvo = `query GetConvo($id: ID!) {
   getConvo(id: $id) {
     id
     messages {
-      items {
-        id
-        authorId
-        content
-        messageConversationId
-        createdAt
-        updatedAt
-      }
       nextToken
     }
     associated {
-      items {
-        id
-        convoLinkUserId
-        convoLinkConversationId
-        createdAt
-        updatedAt
-      }
       nextToken
     }
     name
@@ -85,9 +48,7 @@ export const getConvo = `query GetConvo($id: ID!) {
   }
 }
 `;
-
-export const getUserAndConversations = `
-  query getUserAndConversations($id:ID!) {
+export const getUserAndConversations = `query getUserAndConversations($id:ID!) {
     getUser(id:$id) {
       id
       username

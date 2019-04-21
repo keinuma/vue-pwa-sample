@@ -1,14 +1,47 @@
 import { Auth } from "aws-amplify";
 import * as types from "@/store/mutation-types";
+import {
+  DefineGetters,
+  DefineMutations,
+  DefineActions
+} from "vuex-type-helper";
 
 const namespaced = true;
 
-const state = {
-  currentUser: null,
-  loggedIn: false
+export interface State {
+  currentUser: any;
+}
+
+export interface Getters {
+  username: string;
+  email: string;
+  nickname: string;
+}
+
+export interface Mutations {
+  [types.SET_CURRENT_USER]: {
+    user: any;
+  };
+}
+
+export interface Actions {
+  currentUser: {};
+  signUp: {
+    email: string;
+    password: string;
+  };
+  login: {
+    email: string;
+    password: string;
+  };
+  logout: {};
+}
+
+const state: State = {
+  currentUser: null
 };
 
-const getters = {
+const getters: DefineGetters<Getters, State> = {
   username: state => {
     if (state.currentUser !== null) {
       return state.currentUser.username;
@@ -29,22 +62,18 @@ const getters = {
   }
 };
 
-const mutations = {
-  [types.SET_LOGGED_IN](state) {
-    state.loggedIn = true;
-  },
-  [types.SET_CURRENT_USER](state, user) {
+const mutations: DefineMutations<Mutations, State> = {
+  [types.SET_CURRENT_USER](state, { user }) {
     state.currentUser = user;
   }
 };
 
-const actions = {
+const actions: DefineActions<Actions, State, Mutations, Getters> = {
   async currentUser({ commit }) {
     const user = await Auth.currentAuthenticatedUser().catch(() => {
-      commit(types.SET_CURRENT_USER, null);
-      throw Error;
+      return null;
     });
-    commit(types.SET_CURRENT_USER, user);
+    commit(types.SET_CURRENT_USER, { user });
   },
   async signUp({ commit }, { email, password }) {
     const user = await Auth.signUp({
@@ -55,7 +84,7 @@ const actions = {
         nickname: email
       }
     });
-    commit(types.SET_CURRENT_USER, user);
+    commit(types.SET_CURRENT_USER, { user });
   },
   async login({ commit }, { email, password }) {
     const user = await Auth.signIn({
@@ -64,13 +93,13 @@ const actions = {
     }).catch(() => {
       return null;
     });
-    commit(types.SET_CURRENT_USER, user);
+    commit(types.SET_CURRENT_USER, { user });
   },
   async logout({ commit }) {
-    await Auth.signOut().catch(() => {
-      console.log("error in sign out");
+    await Auth.signOut().catch(error => {
+      return error;
     });
-    commit(types.SET_CURRENT_USER, null);
+    commit(types.SET_CURRENT_USER, { user: null });
   }
 };
 
