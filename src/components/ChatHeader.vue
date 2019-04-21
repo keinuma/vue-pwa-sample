@@ -13,26 +13,22 @@
   </div>
 </template>
 
-<script>
-export default {
-  name: "ChatHeader",
-  data() {
-    return {
-      logoPath: require("@/assets/logo.png")
-    };
-  },
-  computed: {
-    isLogoutDisplayed: function() {
-      return !["login", "signUp"].includes(this.$route.name);
-    }
-  },
-  methods: {
-    onClickSignOut: function() {
-      this.$store.dispatch("auth/logout").catch();
-      this.$router.push("/login");
-    }
+<script lang="ts">
+import { Vue, Component } from "vue-property-decorator";
+
+@Component({})
+export default class ChatHeader extends Vue {
+  logoPath: string = require("@/assets/logo.png");
+
+  get isLogoutDisplayed(): boolean {
+    return !["login", "signUp"].includes(this.$route.name);
   }
-};
+
+  onClickSignOut(): void {
+    this.$store.dispatch("auth/logout").catch();
+    this.$router.push("/login");
+  }
+}
 </script>
 
 <style lang="scss">
