@@ -24,56 +24,56 @@
 
 <script>
 import gql from "graphql-tag";
-import { mapGetters } from "vuex";
+import { Vue, Component } from "vue-property-decorator";
+import { Getter } from "vuex-class";
 import { getUserAndConversations } from "@/graphql/queries";
 
-export default {
-  name: "Convos",
-  data() {
-    return {
-      convos: [],
-      isModal: false
-    };
-  },
-  apollo: {
-    convos: {
-      query: () => gql(getUserAndConversations),
-      variables() {
-        if (this.username === null) {
-          return;
-        }
-        return { id: this.username };
-      },
-      update: data => {
-        return data.getUser.conversations.items;
-      }
-    }
-  },
+export default class Convos extends Vue {
+  convos = [];
+  isModal = false;
+
+  @Getter("auth/username") username: string = "";
+  @Getter("auth/nickname") nickname: string = "";
+
   created() {
     this.$store.dispatch("auth/currentUser").catch(() => {
       this.$router.push("/login");
     });
-  },
-  computed: {
-    ...mapGetters("auth", ["username", "nickname"])
-  },
-  methods: {
-    getUsername(convo) {
-      if (convo === null) {
-        return "";
-      }
-      return convo.conversation.associated.items.find(response => {
-        return response.user.id !== this.username;
-      }).user.username;
-    },
-    getConvo(convo) {
-      this.$router.push({
-        name: "convo",
-        params: { id: convo.conversation.id }
-      });
-    }
   }
-};
+
+  getUsername(convo): string {
+    if (convo === null) {
+      return "";
+    }
+    return convo.conversation.associated.items.find(response => {
+      return response.user.id !== this.username;
+    }).user.username;
+  }
+
+  getConvo(convo) {
+    this.$router.push({
+      name: "convo",
+      params: { id: convo.conversation.id }
+    });
+  }
+
+  get apollo() {
+    return {
+      convos: {
+        query: () => gql(getUserAndConversations),
+        variables() {
+          if (this.username === null) {
+            return;
+          }
+          return { id: this.username };
+        },
+        update: data => {
+          return data.getUser.conversations.items;
+        }
+      }
+    };
+  }
+}
 </script>
 
 <style lang="scss" scoped>

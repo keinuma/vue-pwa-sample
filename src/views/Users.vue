@@ -48,103 +48,96 @@
 
 <script>
 import gql from "graphql-tag";
-import { mapGetters } from "vuex";
+import { Vue, Component } from "vue-property-decorator";
+import { Getter } from "vuex-class";
 import { listUsers } from "@/graphql/queries";
 import { createConvo, createConvoLink } from "@/graphql/mutations";
 
-export default {
-  name: "Users",
-  data() {
-    return {
-      users: [],
-      selectedUser: null,
-      isModal: false
-    };
-  },
-  apollo: {
-    users: {
-      query: () => gql(listUsers),
-      variables() {
-        return { filter: null, limit: 30, nextToken: null };
-      },
-      update(data) {
-        return data.listUsers.items;
-      },
-      error(error) {
-        if (error.networkError.statusCode === 401) {
-          this.$router.push("/login");
-        }
-      }
-    }
-  },
+export default class Users extends Vue {
+  users = [];
+  selectedUser = null;
+  isModal = false;
+
   created() {
     this.$store.dispatch("auth/currentUser").catch(() => {
       this.$router.push("/login");
     });
-  },
-  computed: {
-    ...mapGetters("auth", ["username"]),
-    filteredUsers: function() {
-      if (this.username === null || this.users === []) {
-        return;
-      }
-      return this.users.filter(user => {
-        return this.username !== user.id;
-      });
-    }
-  },
-  methods: {
-    onClickLogout() {
-      this.$store.dispatch("auth/logout").then(() => {
-        this.$router.push("/login");
-      });
-    },
-    checkConversion(user) {
-      console.log(user.conversations.items.length);
-      if (user.conversations.items.length === 0) {
-        this.isModal = true;
-        this.selectedUser = user;
-      } else {
-        this.$router.push({
-          name: "convo",
-          params: { id: user.conversations.items[0].convoLinkConversationId }
-        });
-      }
-    },
-    async onClickStartConversion() {
-      const user = this.selectedUser;
-      const members = [user.id, this.username].sort();
-      const conversationName = members.join(",");
-      const convo = { name: conversationName, members };
-      const conversation = await this.$apollo.mutate({
-        mutation: gql(createConvo),
-        variables: { input: { ...convo } }
-      });
-      const {
-        data: {
-          createConvo: { id: convoLinkConversationId }
+  }
+
+  @Getter("auth/username") username: string = "";
+
+  get apollo() {
+    return {
+      users: {
+        query: () => gql(listUsers),
+        variables() {
+          return { filter: null, limit: 30, nextToken: null };
+        },
+        update(data) {
+          return data.listUsers.items;
+        },
+        error(error) {
+          if (error.networkError.statusCode === 401) {
+            this.$router.push("/login");
+          }
         }
-      } = conversation;
-      const relation1 = {
-        convoLinkUserId: this.username,
-        convoLinkConversationId
-      };
-      const relation2 = { convoLinkUserId: user.id, convoLinkConversationId };
-      await this.$apollo.mutate({
-        mutation: gql(createConvoLink),
-        variables: { input: relation1 }
+      }
+    };
+  }
+
+  get filterdUsers() {
+    if (this.username === null || this.users === []) {
+      return [];
+    }
+    return this.users.filter(user => {
+      return this.username !== user.id;
+    });
+  }
+
+  checkConversion(user) {
+    if (user.conversations.items.length === 0) {
+      this.isModal = true;
+      this.selectedUser = user;
+    } else {
+      this.$router.push({
+        name: "convo",
+        params: { id: user.conversations.items[0].convoLinkConversationId }
       });
-      await this.$apollo.mutate({
-        mutation: gql(createConvoLink),
-        variables: { input: relation2 }
-      });
-    },
-    closeModal() {
-      this.isModal = false;
-      this.selectedUser = null;
     }
   }
-};
+  closeModal() {
+    this.isModal = false;
+    this.selectedUser = null;
+  }
+  async onClickStartConversion() {
+    const user = this.selectedUser;
+    const members = [user.id, this.username].sort();
+    const conversationName = members.join(",");
+    const convo = { name: conversationName, members };
+    const conversation = await this.$apollo.mutate({
+      mutation: gql(createConvo),
+      variables: { input: { ...convo } }
+    });
+    const {
+      data: {
+        createConvo: { id: convoLinkConversationId }
+      }
+    } = conversation;
+    const relation1 = {
+      convoLinkUserId: this.username,
+      convoLinkConversationId
+    };
+    const relation2 = { convoLinkUserId: user.id, convoLinkConversationId };
+    await this.$apollo.mutate({
+      mutation: gql(createConvoLink),
+      variables: { input: relation1 }
+    });
+    await this.$apollo.mutate({
+      mutation: gql(createConvoLink),
+      variables: { input: relation2 }
+    });
+  }
+}
 </script>
 
 <style lang="scss" scoped>
