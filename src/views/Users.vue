@@ -46,7 +46,7 @@
   </div>
 </template>
 
-<script>
+<script lang="ts">
 import gql from "graphql-tag";
 import { Vue, Component } from "vue-property-decorator";
 import { Getter } from "vuex-class";
@@ -64,7 +64,7 @@ export default class Users extends Vue {
     });
   }
 
-  @Getter("auth/username") username: string = "";
+  @Getter("auth/username") username;
 
   get apollo() {
     return {

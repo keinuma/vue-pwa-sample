@@ -22,7 +22,7 @@
   </div>
 </template>
 
-<script>
+<script lang="ts">
 import gql from "graphql-tag";
 import { Vue, Component } from "vue-property-decorator";
 import { Getter } from "vuex-class";
@@ -32,8 +32,8 @@ export default class Convos extends Vue {
   convos = [];
   isModal = false;
 
-  @Getter("auth/username") username: string = "";
-  @Getter("auth/nickname") nickname: string = "";
+  @Getter("auth/username") username;
+  @Getter("auth/nickname") nickname;
 
   created() {
     this.$store.dispatch("auth/currentUser").catch(() => {

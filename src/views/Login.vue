@@ -52,7 +52,7 @@ import { getUser } from "@/graphql/queries";
 import { createUser } from "@/graphql/mutations";
 
 @Component({})
-export default class Login extends Vue{
+export default class Login extends Vue {
   email: string = "";
   password = "";
 
@@ -93,7 +93,12 @@ export default class Login extends Vue{
       .catch(err => {
         console.log(err);
       });
-    if (response !== undefined && response.data.getUser === null) {
+    if (
+      response !== undefined &&
+      response instanceof Object &&
+      response.data !== null &&
+      response.data.getUser === null
+    ) {
       this.$apollo.mutate({
         mutation: gql(createUser),
         variables: {
