@@ -56,8 +56,8 @@ export default class Login extends Vue {
   email: string = "";
   password = "";
 
-  @Getter("auth/username") username: string = "";
-  @Getter("auth/nickname") nickname: string = "";
+  @Getter("auth/username") username;
+  @Getter("auth/nickname") nickname;
 
   created() {
     this.$store
