@@ -45,25 +45,30 @@
 </template>
 
 <script lang="ts">
-import { Getter } from "vuex-class";
 import { Vue, Component } from "vue-property-decorator";
 import gql from "graphql-tag";
 import { getUser } from "@/graphql/queries";
 import { createUser } from "@/graphql/mutations";
+import { authModule } from "@/store/modules/auth";
 
 @Component({})
 export default class Login extends Vue {
   email: string = "";
   password = "";
 
-  @Getter("auth/username") username;
-  @Getter("auth/nickname") nickname;
+  static get username() {
+    return authModule.username;
+  }
+
+  static get nickname() {
+    return authModule.nickname;
+  }
 
   created() {
-    this.$store
-      .dispatch("auth/currentUser")
+    authModule
+      .getCurrentUser()
       .then(() => {
-        if (this.username) {
+        if (Login.username) {
           this.$router.push("/users");
         }
       })
@@ -71,13 +76,13 @@ export default class Login extends Vue {
   }
 
   onClickLogin() {
-    this.$store
-      .dispatch("auth/login", {
+    authModule
+      .login({
         email: this.email,
         password: this.password
       })
       .then(() => {
-        if (this.username) {
+        if (Login.username) {
           this.$router.push("/users");
         }
       })
@@ -103,7 +108,7 @@ export default class Login extends Vue {
         mutation: gql(createUser),
         variables: {
           input: {
-            username: this.nickname
+            username: Login.nickname
           }
         }
       });

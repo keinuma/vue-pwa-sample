@@ -1,112 +1,88 @@
-import { Auth } from "aws-amplify";
+import { Auth as AmplifyAuth } from "aws-amplify";
 import * as types from "@/store/mutation-types";
 import {
-  DefineGetters,
-  DefineMutations,
-  DefineActions
-} from "vuex-type-helper";
+  Module,
+  VuexModule,
+  Mutation,
+  Action,
+  getModule
+} from "vuex-module-decorators";
+import store from "@/store";
 
-const namespaced = true;
-
-export interface State {
+export interface IAuthState {
   currentUser: any;
 }
 
-export interface Getters {
-  username: string;
-  email: string;
-  nickname: string;
-}
+@Module({ dynamic: true, store, namespaced: true, name: "auth" })
+class Auth extends VuexModule implements IAuthState {
+  currentUser = null;
 
-export interface Mutations {
-  [types.SET_CURRENT_USER]: {
-    user: any;
-  };
-}
-
-export interface Actions {
-  currentUser: {};
-  signUp: {
-    email: string;
-    password: string;
-  };
-  login: {
-    email: string;
-    password: string;
-  };
-  logout: {};
-}
-
-const state: State = {
-  currentUser: null
-};
-
-const getters: DefineGetters<Getters, State> = {
-  username: state => {
-    if (state.currentUser !== null) {
-      return state.currentUser.username;
-    }
-    return null;
-  },
-  email: state => {
-    if (state.currentUser !== null) {
-      return state.currentUser.attributes.email;
-    }
-    return null;
-  },
-  nickname: state => {
-    if (state.currentUser !== null) {
-      return state.currentUser.attributes.nickname;
+  get username(): string {
+    if (this.currentUser !== null) {
+      return this.currentUser.username;
     }
     return null;
   }
-};
 
-const mutations: DefineMutations<Mutations, State> = {
-  [types.SET_CURRENT_USER](state, { user }) {
-    state.currentUser = user;
+  get email(): string {
+    if (this.currentUser !== null) {
+      return this.currentUser.email;
+    }
+    return null;
   }
-};
 
-const actions: DefineActions<Actions, State, Mutations, Getters> = {
-  async currentUser({ commit }) {
-    const user = await Auth.currentAuthenticatedUser().catch(() => {
+  get nickname(): string {
+    if (this.currentUser !== null) {
+      return this.currentUser.nickname;
+    }
+    return null;
+  }
+
+  @Mutation
+  private [types.SET_CURRENT_USER](user: any) {
+    this.currentUser = user;
+  }
+
+  @Action
+  public async getCurrentUser() {
+    console.log(process.env);
+    const user = await AmplifyAuth.currentAuthenticatedUser().catch(() => {
       return null;
     });
-    commit(types.SET_CURRENT_USER, { user });
-  },
-  async signUp({ commit }, { email, password }) {
-    const user = await Auth.signUp({
+    this.context.commit(types.SET_CURRENT_USER, user);
+  }
+
+  @Action
+  public async signUp({ email, password }) {
+    const user = await AmplifyAuth.signUp({
       username: email,
-      password,
+      password: password,
       attributes: {
         email,
         nickname: email
       }
     });
-    commit(types.SET_CURRENT_USER, { user });
-  },
-  async login({ commit }, { email, password }) {
-    const user = await Auth.signIn({
+    this.context.commit(types.SET_CURRENT_USER, user);
+  }
+
+  @Action
+  public async login({ email, password }) {
+    const user = await AmplifyAuth.signIn({
       username: email,
       password
     }).catch(() => {
       return null;
     });
-    commit(types.SET_CURRENT_USER, { user });
-  },
-  async logout({ commit }) {
-    await Auth.signOut().catch(error => {
-      return error;
-    });
-    commit(types.SET_CURRENT_USER, { user: null });
+    this.context.commit(types.SET_CURRENT_USER, user);
   }
-};
 
-export default {
-  namespaced,
-  state,
-  getters,
-  mutations,
-  actions
-};
+  @Action
+  public async logout() {
+    await AmplifyAuth.signOut().catch(error => {
+      throw error;
+    });
+    this.context.commit(types.SET_CURRENT_USER, null);
+  }
+}
+
+export const authModule = getModule(Auth);
