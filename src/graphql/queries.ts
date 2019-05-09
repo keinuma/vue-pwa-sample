@@ -76,17 +76,6 @@ export const listUsers = `query ListUsers(
         }
         nextToken
       }
-      messages {
-        items {
-          id
-          authorId
-          content
-          messageConversationId
-          createdAt
-          updatedAt
-        }
-        nextToken
-      }
       createdAt
       updatedAt
     }

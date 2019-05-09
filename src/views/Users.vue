@@ -64,7 +64,10 @@ import { authModule } from "@/store/modules/auth";
         return data.listUsers.items;
       },
       error(error) {
-        if (error.networkError.statusCode === 401) {
+        if (
+          error.networkError !== undefined &&
+          error.networkError.statusCode === 401
+        ) {
           this.$router.push("/login");
         }
       },
