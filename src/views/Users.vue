@@ -67,7 +67,8 @@ import { authModule } from "@/store/modules/auth";
         if (error.networkError.statusCode === 401) {
           this.$router.push("/login");
         }
-      }
+      },
+      fetchPolicy: "cache-and-network"
     }
   }
 })
