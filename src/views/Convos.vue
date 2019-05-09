@@ -25,18 +25,40 @@
 <script lang="ts">
 import gql from "graphql-tag";
 import { Vue, Component } from "vue-property-decorator";
-import { Getter } from "vuex-class";
 import { getUserAndConversations } from "@/graphql/queries";
+import { authModule } from "@/store/modules/auth";
 
+@Component({
+  apollo: {
+    convos: {
+      query: () => gql(getUserAndConversations),
+      variables() {
+        if (this.username === null) {
+          return;
+        }
+        return { id: this.username };
+      },
+      update: data => {
+        return data.getUser.conversations.items;
+      }
+    }
+  }
+})
 export default class Convos extends Vue {
   convos = [];
   isModal = false;
+  authModule = authModule;
 
-  @Getter("auth/username") username;
-  @Getter("auth/nickname") nickname;
+  get username() {
+    return this.authModule.username;
+  }
+
+  get nickname() {
+    return this.authModule.nickname;
+  }
 
   created() {
-    this.$store.dispatch("auth/currentUser").catch(() => {
+    this.authModule.getCurrentUser().catch(() => {
       this.$router.push("/login");
     });
   }
@@ -55,23 +77,6 @@ export default class Convos extends Vue {
       name: "convo",
       params: { id: convo.conversation.id }
     });
-  }
-
-  get apollo() {
-    return {
-      convos: {
-        query: () => gql(getUserAndConversations),
-        variables() {
-          if (this.username === null) {
-            return;
-          }
-          return { id: this.username };
-        },
-        update: data => {
-          return data.getUser.conversations.items;
-        }
-      }
-    };
   }
 }
 </script>

@@ -28,27 +28,47 @@
 <script lang="ts">
 import gql from "graphql-tag";
 import { Vue, Component } from "vue-property-decorator";
-import { Getter } from "vuex-class";
 import { getConvo } from "@/graphql/queries";
 import { createMessage } from "@/graphql/mutations";
+import { authModule } from "@/store/modules/auth";
 
-@Component({})
+@Component({
+  apollo: {
+    messages: {
+      query: () => gql(getConvo),
+      variables() {
+        return {
+          id: this.$route.params.id
+        };
+      },
+      update: data => {
+        return data.getConvo.messages.items;
+      }
+    }
+  }
+})
 export default class Messages extends Vue {
   messages: string[] = [];
   content: string = "";
+  authModule = authModule;
 
   created(): void {
-    this.$store.dispatch("auth/currentUser").catch(() => {
+    this.authModule.getCurrentUser().catch(() => {
       this.$router.push("/login");
     });
   }
 
-  @Getter("auth/username") username: string = "";
-  @Getter("auth/nickname") nickname: string = "";
+  get username() {
+    return this.authModule.username;
+  }
+
+  get nickname() {
+    return this.authModule.nickname;
+  }
 
   async sendMessage(): Promise<any> {
     if (this.content !== "") {
-      const response = await this.$apollo.mutate({
+      await this.$apollo.mutate({
         mutation: gql(createMessage),
         variables: {
           input: {
@@ -60,20 +80,6 @@ export default class Messages extends Vue {
       });
       this.content = "";
     }
-  }
-
-  get apollo() {
-    return {
-      messages: {
-        query: () => gql(getConvo),
-        variables() {
-          return { id: this.$route.params.id };
-        },
-        update: data => {
-          return data.getConvo.messages.items;
-        }
-      }
-    };
   }
 
   isSenderOwn(message): boolean {
