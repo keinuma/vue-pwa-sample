@@ -85,7 +85,7 @@ export default class Users extends Vue {
     };
   }
 
-  get filterdUsers() {
+  get filteredUsers() {
     if (this.username === null || this.users === []) {
       return [];
     }
