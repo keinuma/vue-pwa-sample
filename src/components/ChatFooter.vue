@@ -6,26 +6,15 @@
   </footer>
 </template>
 
-<script>
-export default {
-  name: "ChatFooter",
-  data() {
-    return {
-      logoPath: require("@/assets/logo.png")
-    };
-  },
-  computed: {
-    isFooterDisplayed: function() {
-      return !["login", "signUp"].includes(this.$route.name);
-    }
-  },
-  methods: {
-    onClickSignOut: function() {
-      this.$store.dispatch("auth/logout").catch();
-      this.$router.push("/login");
-    }
+<script lang="ts">
+import { Vue, Component } from "vue-property-decorator";
+
+@Component({})
+export default class ChatFooter extends Vue {
+  get isFooterDisplayed(): boolean {
+    return !["login", "signUp"].includes(this.$route.name);
   }
-};
+}
 </script>
 
 <style lang="scss" scoped>

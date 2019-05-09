@@ -1,4 +1,4 @@
-// eslint-disable
+// tslint:disable
 // this is an auto generated file. This will be overwritten
 
 export const onCreateConvoLink = `subscription OnCreateConvoLink($convoLinkUserId: ID!) {
@@ -8,9 +8,24 @@ export const onCreateConvoLink = `subscription OnCreateConvoLink($convoLinkUserI
       id
       username
       conversations {
+        items {
+          id
+          convoLinkUserId
+          convoLinkConversationId
+          createdAt
+          updatedAt
+        }
         nextToken
       }
       messages {
+        items {
+          id
+          authorId
+          content
+          messageConversationId
+          createdAt
+          updatedAt
+        }
         nextToken
       }
       createdAt
@@ -20,9 +35,24 @@ export const onCreateConvoLink = `subscription OnCreateConvoLink($convoLinkUserI
     conversation {
       id
       messages {
+        items {
+          id
+          authorId
+          content
+          messageConversationId
+          createdAt
+          updatedAt
+        }
         nextToken
       }
       associated {
+        items {
+          id
+          convoLinkUserId
+          convoLinkConversationId
+          createdAt
+          updatedAt
+        }
         nextToken
       }
       name
@@ -43,9 +73,24 @@ export const onCreateMessage = `subscription OnCreateMessage($messageConversatio
       id
       username
       conversations {
+        items {
+          id
+          convoLinkUserId
+          convoLinkConversationId
+          createdAt
+          updatedAt
+        }
         nextToken
       }
       messages {
+        items {
+          id
+          authorId
+          content
+          messageConversationId
+          createdAt
+          updatedAt
+        }
         nextToken
       }
       createdAt
@@ -56,9 +101,24 @@ export const onCreateMessage = `subscription OnCreateMessage($messageConversatio
     conversation {
       id
       messages {
+        items {
+          id
+          authorId
+          content
+          messageConversationId
+          createdAt
+          updatedAt
+        }
         nextToken
       }
       associated {
+        items {
+          id
+          convoLinkUserId
+          convoLinkConversationId
+          createdAt
+          updatedAt
+        }
         nextToken
       }
       name
@@ -79,7 +139,20 @@ export const onCreateUser = `subscription OnCreateUser {
     conversations {
       items {
         id
+        user {
+          id
+          username
+          createdAt
+          updatedAt
+        }
         convoLinkUserId
+        conversation {
+          id
+          name
+          members
+          createdAt
+          updatedAt
+        }
         convoLinkConversationId
         createdAt
         updatedAt
@@ -89,8 +162,21 @@ export const onCreateUser = `subscription OnCreateUser {
     messages {
       items {
         id
+        author {
+          id
+          username
+          createdAt
+          updatedAt
+        }
         authorId
         content
+        conversation {
+          id
+          name
+          members
+          createdAt
+          updatedAt
+        }
         messageConversationId
         createdAt
         updatedAt
@@ -109,7 +195,20 @@ export const onUpdateUser = `subscription OnUpdateUser {
     conversations {
       items {
         id
+        user {
+          id
+          username
+          createdAt
+          updatedAt
+        }
         convoLinkUserId
+        conversation {
+          id
+          name
+          members
+          createdAt
+          updatedAt
+        }
         convoLinkConversationId
         createdAt
         updatedAt
@@ -119,8 +218,21 @@ export const onUpdateUser = `subscription OnUpdateUser {
     messages {
       items {
         id
+        author {
+          id
+          username
+          createdAt
+          updatedAt
+        }
         authorId
         content
+        conversation {
+          id
+          name
+          members
+          createdAt
+          updatedAt
+        }
         messageConversationId
         createdAt
         updatedAt
@@ -139,7 +251,20 @@ export const onDeleteUser = `subscription OnDeleteUser {
     conversations {
       items {
         id
+        user {
+          id
+          username
+          createdAt
+          updatedAt
+        }
         convoLinkUserId
+        conversation {
+          id
+          name
+          members
+          createdAt
+          updatedAt
+        }
         convoLinkConversationId
         createdAt
         updatedAt
@@ -149,8 +274,21 @@ export const onDeleteUser = `subscription OnDeleteUser {
     messages {
       items {
         id
+        author {
+          id
+          username
+          createdAt
+          updatedAt
+        }
         authorId
         content
+        conversation {
+          id
+          name
+          members
+          createdAt
+          updatedAt
+        }
         messageConversationId
         createdAt
         updatedAt

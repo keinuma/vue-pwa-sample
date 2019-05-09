@@ -5,7 +5,7 @@
         <div class="heading">ユーザー一覧</div>
         <div class="user-container">
           <div
-            @click="checkConversion(user)"
+            @click="onClickCheckConversion(user)"
             v-for="user in filteredUsers"
             :key="user.id"
             class="user"
@@ -46,21 +46,14 @@
   </div>
 </template>
 
-<script>
+<script lang="ts">
 import gql from "graphql-tag";
-import { mapGetters } from "vuex";
+import { Vue, Component } from "vue-property-decorator";
 import { listUsers } from "@/graphql/queries";
 import { createConvo, createConvoLink } from "@/graphql/mutations";
+import { authModule } from "@/store/modules/auth";
 
-export default {
-  name: "Users",
-  data() {
-    return {
-      users: [],
-      selectedUser: null,
-      isModal: false
-    };
-  },
+@Component({
   apollo: {
     users: {
       query: () => gql(listUsers),
@@ -71,80 +64,86 @@ export default {
         return data.listUsers.items;
       },
       error(error) {
-        if (error.networkError.statusCode === 401) {
+        if (
+          error.networkError !== undefined &&
+          error.networkError.statusCode === 401
+        ) {
           this.$router.push("/login");
         }
-      }
-    }
-  },
-  created() {
-    this.$store.dispatch("auth/currentUser").catch(() => {
-      this.$router.push("/login");
-    });
-  },
-  computed: {
-    ...mapGetters("auth", ["username"]),
-    filteredUsers: function() {
-      if (this.username === null || this.users === []) {
-        return;
-      }
-      return this.users.filter(user => {
-        return this.username !== user.id;
-      });
-    }
-  },
-  methods: {
-    onClickLogout() {
-      this.$store.dispatch("auth/logout").then(() => {
-        this.$router.push("/login");
-      });
-    },
-    checkConversion(user) {
-      console.log(user.conversations.items.length);
-      if (user.conversations.items.length === 0) {
-        this.isModal = true;
-        this.selectedUser = user;
-      } else {
-        this.$router.push({
-          name: "convo",
-          params: { id: user.conversations.items[0].convoLinkConversationId }
-        });
-      }
-    },
-    async onClickStartConversion() {
-      const user = this.selectedUser;
-      const members = [user.id, this.username].sort();
-      const conversationName = members.join(",");
-      const convo = { name: conversationName, members };
-      const conversation = await this.$apollo.mutate({
-        mutation: gql(createConvo),
-        variables: { input: { ...convo } }
-      });
-      const {
-        data: {
-          createConvo: { id: convoLinkConversationId }
-        }
-      } = conversation;
-      const relation1 = {
-        convoLinkUserId: this.username,
-        convoLinkConversationId
-      };
-      const relation2 = { convoLinkUserId: user.id, convoLinkConversationId };
-      await this.$apollo.mutate({
-        mutation: gql(createConvoLink),
-        variables: { input: relation1 }
-      });
-      await this.$apollo.mutate({
-        mutation: gql(createConvoLink),
-        variables: { input: relation2 }
-      });
-    },
-    closeModal() {
-      this.isModal = false;
-      this.selectedUser = null;
+      },
+      fetchPolicy: "cache-and-network"
     }
   }
-};
+})
+export default class Users extends Vue {
+  users = [];
+  selectedUser = null;
+  isModal = false;
+  authModule = authModule;
+
+  created() {
+    this.authModule.getCurrentUser().catch(() => {
+      this.$router.push("/login");
+    });
+  }
+
+  get username() {
+    return this.authModule.username;
+  }
+
+  get filteredUsers() {
+    if (this.username === null || this.users === []) {
+      return [];
+    }
+    return this.users.filter(user => {
+      return this.username !== user.id;
+    });
+  }
+
+  onClickCheckConversion(user) {
+    if (user.conversations.items.length === 0) {
+      this.isModal = true;
+      this.selectedUser = user;
+    } else {
+      this.$router.push({
+        name: "convo",
+        params: { id: user.conversations.items[0].convoLinkConversationId }
+      });
+    }
+  }
+  closeModal() {
+    this.isModal = false;
+    this.selectedUser = null;
+  }
+  async onClickStartConversion() {
+    const user = this.selectedUser;
+    const members = [user.id, this.username].sort();
+    const conversationName = members.join(",");
+    const convo = { name: conversationName, members };
+    const conversation = await this.$apollo.mutate({
+      mutation: gql(createConvo),
+      variables: { input: { ...convo } }
+    });
+    const {
+      data: {
+        createConvo: { id: convoLinkConversationId }
+      }
+    } = conversation;
+    const relation1 = {
+      convoLinkUserId: this.username,
+      convoLinkConversationId
+    };
+    const relation2 = { convoLinkUserId: user.id, convoLinkConversationId };
+    await this.$apollo.mutate({
+      mutation: gql(createConvoLink),
+      variables: { input: relation1 }
+    });
+    await this.$apollo.mutate({
+      mutation: gql(createConvoLink),
+      variables: { input: relation2 }
+    });
+  }
+}
 </script>
 
 <style lang="scss" scoped>

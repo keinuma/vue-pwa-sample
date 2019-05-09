@@ -39,26 +39,23 @@
   </div>
 </template>
 
-<script>
-export default {
-  name: "SignUp",
-  data() {
-    return {
-      email: "",
-      password: ""
-    };
-  },
-  methods: {
-    onClickSignUp: function() {
-      this.$store
-        .dispatch("auth/signUp", {
-          email: this.email,
-          password: this.password
-        })
-        .catch();
-    }
+<script lang="ts">
+import { Vue, Component } from "vue-property-decorator";
+
+@Component({})
+export default class SignUp extends Vue {
+  email = "";
+  password = "";
+
+  onClickSignUp() {
+    this.$store
+      .dispatch("auth/signUp", {
+        email: this.email,
+        password: this.password
+      })
+      .catch();
   }
-};
+}
 </script>
 
 <style lang="scss" scoped>

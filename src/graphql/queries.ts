@@ -1,4 +1,4 @@
-// eslint-disable
+// tslint:disable
 // this is an auto generated file. This will be overwritten
 
 export const getUser = `query GetUser($id: ID!) {
@@ -8,7 +8,20 @@ export const getUser = `query GetUser($id: ID!) {
     conversations {
       items {
         id
+        user {
+          id
+          username
+          createdAt
+          updatedAt
+        }
         convoLinkUserId
+        conversation {
+          id
+          name
+          members
+          createdAt
+          updatedAt
+        }
         convoLinkConversationId
         createdAt
         updatedAt
@@ -18,8 +31,21 @@ export const getUser = `query GetUser($id: ID!) {
     messages {
       items {
         id
+        author {
+          id
+          username
+          createdAt
+          updatedAt
+        }
         authorId
         content
+        conversation {
+          id
+          name
+          members
+          createdAt
+          updatedAt
+        }
         messageConversationId
         createdAt
         updatedAt
@@ -41,11 +67,14 @@ export const listUsers = `query ListUsers(
       id
       username
       conversations {
-        nextToken
         items {
-          convoLinkConversationId
+          id
           convoLinkUserId
+          convoLinkConversationId
+          createdAt
+          updatedAt
         }
+        nextToken
       }
       createdAt
       updatedAt
@@ -60,8 +89,21 @@ export const getConvo = `query GetConvo($id: ID!) {
     messages {
       items {
         id
+        author {
+          id
+          username
+          createdAt
+          updatedAt
+        }
         authorId
         content
+        conversation {
+          id
+          name
+          members
+          createdAt
+          updatedAt
+        }
         messageConversationId
         createdAt
         updatedAt
@@ -71,7 +113,20 @@ export const getConvo = `query GetConvo($id: ID!) {
     associated {
       items {
         id
+        user {
+          id
+          username
+          createdAt
+          updatedAt
+        }
         convoLinkUserId
+        conversation {
+          id
+          name
+          members
+          createdAt
+          updatedAt
+        }
         convoLinkConversationId
         createdAt
         updatedAt
@@ -85,9 +140,7 @@ export const getConvo = `query GetConvo($id: ID!) {
   }
 }
 `;
-
-export const getUserAndConversations = `
-  query getUserAndConversations($id:ID!) {
+export const getUserAndConversations = `query getUserAndConversations($id:ID!) {
     getUser(id:$id) {
       id
       username

@@ -19,20 +19,28 @@
     "register-service-worker": "^1.6.2",
     "vue": "^2.6.6",
     "vue-apollo": "^3.0.0-beta.28",
+    "vue-class-component": "^7.0.2",
+    "vue-property-decorator": "^8.1.0",
     "vue-router": "^3.0.1",
-    "vuex": "^3.0.1"
+    "vuex": "^3.0.1",
+    "vuex-class": "^0.3.2",
+    "vuex-module-decorators": "^0.9.8"
   },
   "devDependencies": {
+    "@types/node": "^11.13.6",
     "@vue/cli-plugin-babel": "^3.5.0",
     "@vue/cli-plugin-eslint": "^3.5.0",
     "@vue/cli-plugin-pwa": "^3.5.0",
+    "@vue/cli-plugin-typescript": "^3.6.0",
     "@vue/cli-service": "^3.5.0",
     "@vue/eslint-config-prettier": "^4.0.1",
+    "@vue/eslint-config-typescript": "^4.0.0",
     "babel-eslint": "^10.0.1",
     "eslint": "^5.8.0",
     "eslint-plugin-vue": "^5.0.0",
     "node-sass": "^4.11.0",
     "sass-loader": "^7.1.0",
+    "typescript": "^3.4.3",
     "vue-template-compiler": "^2.5.21"
   },
   "eslintConfig": {
@@ -42,13 +50,14 @@
     },
     "extends": [
       "plugin:vue/essential",
-      "@vue/prettier"
+      "@vue/prettier",
+      "@vue/typescript"
     ],
     "rules": {
       "no-console": "off"
     },
     "parserOptions": {
-      "parser": "babel-eslint"
+      "parser": "@typescript-eslint/parser"
     }
   },
   "postcss": {

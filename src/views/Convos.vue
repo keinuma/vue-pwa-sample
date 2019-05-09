@@ -22,19 +22,13 @@
   </div>
 </template>
 
-<script>
+<script lang="ts">
 import gql from "graphql-tag";
-import { mapGetters } from "vuex";
+import { Vue, Component } from "vue-property-decorator";
 import { getUserAndConversations } from "@/graphql/queries";
+import { authModule } from "@/store/modules/auth";
 
-export default {
-  name: "Convos",
-  data() {
-    return {
-      convos: [],
-      isModal: false
-    };
-  },
+@Component({
   apollo: {
     convos: {
       query: () => gql(getUserAndConversations),
@@ -48,32 +42,43 @@ export default {
         return data.getUser.conversations.items;
       }
     }
-  },
+  }
+})
+export default class Convos extends Vue {
+  convos = [];
+  isModal = false;
+  authModule = authModule;
+
+  get username() {
+    return this.authModule.username;
+  }
+
+  get nickname() {
+    return this.authModule.nickname;
+  }
+
   created() {
-    this.$store.dispatch("auth/currentUser").catch(() => {
+    this.authModule.getCurrentUser().catch(() => {
       this.$router.push("/login");
     });
-  },
-  computed: {
-    ...mapGetters("auth", ["username", "nickname"])
-  },
-  methods: {
-    getUsername(convo) {
-      if (convo === null) {
-        return "";
-      }
-      return convo.conversation.associated.items.find(response => {
-        return response.user.id !== this.username;
-      }).user.username;
-    },
-    getConvo(convo) {
-      this.$router.push({
-        name: "convo",
-        params: { id: convo.conversation.id }
-      });
-    }
   }
-};
+
+  getUsername(convo): string {
+    if (convo === null) {
+      return "";
+    }
+    return convo.conversation.associated.items.find(response => {
+      return response.user.id !== this.username;
+    }).user.username;
+  }
+
+  getConvo(convo) {
+    this.$router.push({
+      name: "convo",
+      params: { id: convo.conversation.id }
+    });
+  }
+}
 </script>
 
 <style lang="scss" scoped>

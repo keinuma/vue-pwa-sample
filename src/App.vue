@@ -6,17 +6,18 @@
   </div>
 </template>
 
-<script>
-import ChatHeader from "@/components/ChatHeader";
-import ChatFooter from "@/components/ChatFooter";
+<script lang="ts">
+import { Vue, Component } from "vue-property-decorator";
+import ChatHeader from "@/components/ChatHeader.vue";
+import ChatFooter from "@/components/ChatFooter.vue";
 
-export default {
-  name: "App",
+@Component({
   components: {
     ChatHeader,
     ChatFooter
   }
-};
+})
+export default class App extends Vue {}
 </script>
 
 <style lang="scss">

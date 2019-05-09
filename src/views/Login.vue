@@ -44,68 +44,78 @@
   </div>
 </template>
 
-<script>
-import { mapGetters } from "vuex";
+<script lang="ts">
+import { Vue, Component } from "vue-property-decorator";
 import gql from "graphql-tag";
 import { getUser } from "@/graphql/queries";
 import { createUser } from "@/graphql/mutations";
+import { authModule } from "@/store/modules/auth";
 
-export default {
-  name: "Login",
-  data() {
-    return {
-      email: "",
-      password: ""
-    };
-  },
-  computed: {
-    ...mapGetters("auth", ["username", "nickname"])
-  },
+@Component({})
+export default class Login extends Vue {
+  email: string = "";
+  password = "";
+  authModule = authModule;
+
+  get username() {
+    return this.authModule.username;
+  }
+
+  get nickname() {
+    return this.authModule.nickname;
+  }
+
   created() {
-    this.$store
-      .dispatch("auth/currentUser")
+    authModule
+      .getCurrentUser()
       .then(() => {
         if (this.username) {
           this.$router.push("/users");
         }
       })
       .catch();
-  },
-  methods: {
-    onClickLogin: function() {
-      this.$store
-        .dispatch("auth/login", {
-          email: this.email,
-          password: this.password
-        })
-        .then(() => {
-          this.checkIfUserExists(this.username).catch();
+  }
+
+  onClickLogin() {
+    authModule
+      .login({
+        email: this.email,
+        password: this.password
+      })
+      .then(() => {
+        if (this.username) {
           this.$router.push("/users");
-        })
-        .catch();
-    },
-    checkIfUserExists: async function(id) {
-      const response = await this.$apollo
-        .query({
-          query: gql(getUser),
-          variables: { id }
-        })
-        .catch(err => {
-          console.log(err);
-        });
-      if (response.data.getUser === null) {
-        this.$apollo.mutate({
-          mutation: gql(createUser),
-          variables: {
-            input: {
-              username: this.nickname
-            }
+        }
+      })
+      .catch();
+  }
+
+  async checkIfUserExists(id: string) {
+    const response = await this.$apollo
+      .query({
+        query: gql(getUser),
+        variables: { id }
+      })
+      .catch(err => {
+        console.log(err);
+      });
+    if (
+      response !== undefined &&
+      response instanceof Object &&
+      response.data !== null &&
+      response.data.getUser === null
+    ) {
+      this.$apollo.mutate({
+        mutation: gql(createUser),
+        variables: {
+          input: {
+            username: this.nickname
           }
-        });
-      }
+        }
+      });
     }
   }
-};
+}
 </script>
 
 <style lang="scss" scoped>

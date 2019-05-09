@@ -25,57 +25,50 @@
   </div>
 </template>
 
-<script>
+<script lang="ts">
 import gql from "graphql-tag";
-import { mapGetters } from "vuex";
+import { Vue, Component } from "vue-property-decorator";
 import { getConvo } from "@/graphql/queries";
 import { createMessage } from "@/graphql/mutations";
-import { onCreateMessage } from "@/graphql/subscriptions";
+import { authModule } from "@/store/modules/auth";
 
-export default {
-  name: "Messages",
-  data() {
-    return {
-      messages: [],
-      content: ""
-    };
-  },
+@Component({
   apollo: {
     messages: {
       query: () => gql(getConvo),
       variables() {
-        return { id: this.$route.params.id };
+        return {
+          id: this.$route.params.id
+        };
       },
       update: data => {
         return data.getConvo.messages.items;
       }
     }
-  },
-  computed: {
-    ...mapGetters("auth", ["username", "nickname"])
-  },
-  created() {
-    this.$store.dispatch("auth/currentUser").catch(() => {
+  }
+})
+export default class Messages extends Vue {
+  messages: string[] = [];
+  content: string = "";
+  authModule = authModule;
+
+  created(): void {
+    this.authModule.getCurrentUser().catch(() => {
       this.$router.push("/login");
     });
-    this.$apollo
-      .subscribe({
-        query: gql(onCreateMessage),
-        variables: {
-          messageConversationId: this.$route.params.id
-        }
-      })
-      .subscribe({
-        next: response => {
-          console.log(response);
-          this.messages = [...this.messages, response.data.onCreateMessage];
-        }
-      });
-  },
-  methods: {
-    async sendMessage() {
-      if (this.content === "") return;
-      const response = await this.$apollo.mutate({
+  }
+
+  get username() {
+    return this.authModule.username;
+  }
+
+  get nickname() {
+    return this.authModule.nickname;
+  }
+
+  async sendMessage(): Promise<any> {
+    if (this.content !== "") {
+      await this.$apollo.mutate({
         mutation: gql(createMessage),
         variables: {
           input: {
@@ -85,14 +78,14 @@ export default {
           }
         }
       });
-      console.log(response);
       this.content = "";
-    },
-    isSenderOwn(message) {
-      return message.authorId === this.username;
     }
   }
-};
+
+  isSenderOwn(message): boolean {
+    return message.authorId === this.username;
+  }
+}
 </script>
 
 <style lang="scss" scoped>
