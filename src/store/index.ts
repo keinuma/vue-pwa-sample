@@ -6,7 +6,7 @@ import { IAuthState } from "@/store/modules/auth";
 Vue.use(Vuex);
 
 export interface State {
-  auth: IAuthState
+  auth: IAuthState;
 }
 
 export default new Vuex.Store<State>({});

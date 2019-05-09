@@ -22,8 +22,12 @@ const awsmobile = {
     responseType: "code"
   },
   federationTarget: "COGNITO_USER_POOLS",
-  aws_appsync_graphqlEndpoint: process.env.VUE_APP_APPSYNC_ENDPOINT ? process.env.VUE_APP_APPSYNC_ENDPOINT : "",
-  aws_appsync_region: process.env.VUE_APP_AWS_REGION ? process.env.VUE_APP_AWS_REGION : "",
+  aws_appsync_graphqlEndpoint: process.env.VUE_APP_APPSYNC_ENDPOINT
+    ? process.env.VUE_APP_APPSYNC_ENDPOINT
+    : "",
+  aws_appsync_region: process.env.VUE_APP_AWS_REGION
+    ? process.env.VUE_APP_AWS_REGION
+    : "",
   aws_appsync_authenticationType: AWSAppSync.AUTH_TYPE.AMAZON_COGNITO_USER_POOLS
 };
 
