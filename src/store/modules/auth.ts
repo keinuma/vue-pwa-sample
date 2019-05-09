@@ -45,7 +45,6 @@ class Auth extends VuexModule implements IAuthState {
 
   @Action
   public async getCurrentUser() {
-    console.log(process.env);
     const user = await AmplifyAuth.currentAuthenticatedUser().catch(() => {
       return null;
     });

@@ -5,7 +5,7 @@
         <div class="heading">ユーザー一覧</div>
         <div class="user-container">
           <div
-            @click="checkConversion(user)"
+            @click="onClickCheckConversion(user)"
             v-for="user in filteredUsers"
             :key="user.id"
             class="user"
@@ -49,40 +49,42 @@
 <script lang="ts">
 import gql from "graphql-tag";
 import { Vue, Component } from "vue-property-decorator";
-import { Getter } from "vuex-class";
 import { listUsers } from "@/graphql/queries";
 import { createConvo, createConvoLink } from "@/graphql/mutations";
+import { authModule } from "@/store/modules/auth";
 
+@Component({
+  apollo: {
+    users: {
+      query: () => gql(listUsers),
+      variables() {
+        return { filter: null, limit: 30, nextToken: null };
+      },
+      update(data) {
+        return data.listUsers.items;
+      },
+      error(error) {
+        if (error.networkError.statusCode === 401) {
+          this.$router.push("/login");
+        }
+      }
+    }
+  }
+})
 export default class Users extends Vue {
   users = [];
   selectedUser = null;
   isModal = false;
+  authModule = authModule;
 
   created() {
-    this.$store.dispatch("auth/currentUser").catch(() => {
+    this.authModule.getCurrentUser().catch(() => {
       this.$router.push("/login");
     });
   }
 
-  @Getter("auth/username") username;
-
-  get apollo() {
-    return {
-      users: {
-        query: () => gql(listUsers),
-        variables() {
-          return { filter: null, limit: 30, nextToken: null };
-        },
-        update(data) {
-          return data.listUsers.items;
-        },
-        error(error) {
-          if (error.networkError.statusCode === 401) {
-            this.$router.push("/login");
-          }
-        }
-      }
-    };
+  get username() {
+    return this.authModule.username;
   }
 
   get filteredUsers() {
@@ -94,7 +96,7 @@ export default class Users extends Vue {
     });
   }
 
-  checkConversion(user) {
+  onClickCheckConversion(user) {
     if (user.conversations.items.length === 0) {
       this.isModal = true;
       this.selectedUser = user;

@@ -55,20 +55,21 @@ import { authModule } from "@/store/modules/auth";
 export default class Login extends Vue {
   email: string = "";
   password = "";
+  authModule = authModule;
 
-  static get username() {
-    return authModule.username;
+  get username() {
+    return this.authModule.username;
   }
 
-  static get nickname() {
-    return authModule.nickname;
+  get nickname() {
+    return this.authModule.nickname;
   }
 
   created() {
     authModule
       .getCurrentUser()
       .then(() => {
-        if (Login.username) {
+        if (this.username) {
           this.$router.push("/users");
         }
       })
@@ -82,7 +83,7 @@ export default class Login extends Vue {
         password: this.password
       })
       .then(() => {
-        if (Login.username) {
+        if (this.username) {
           this.$router.push("/users");
         }
       })
@@ -108,7 +109,7 @@ export default class Login extends Vue {
         mutation: gql(createUser),
         variables: {
           input: {
-            username: Login.nickname
+            username: this.nickname
           }
         }
       });
