@@ -6,9 +6,50 @@ export const getUser = `query GetUser($id: ID!) {
     id
     username
     conversations {
+      items {
+        id
+        user {
+          id
+          username
+          createdAt
+          updatedAt
+        }
+        convoLinkUserId
+        conversation {
+          id
+          name
+          members
+          createdAt
+          updatedAt
+        }
+        convoLinkConversationId
+        createdAt
+        updatedAt
+      }
       nextToken
     }
     messages {
+      items {
+        id
+        author {
+          id
+          username
+          createdAt
+          updatedAt
+        }
+        authorId
+        content
+        conversation {
+          id
+          name
+          members
+          createdAt
+          updatedAt
+        }
+        messageConversationId
+        createdAt
+        updatedAt
+      }
       nextToken
     }
     createdAt
@@ -25,6 +66,27 @@ export const listUsers = `query ListUsers(
     items {
       id
       username
+      conversations {
+        items {
+          id
+          convoLinkUserId
+          convoLinkConversationId
+          createdAt
+          updatedAt
+        }
+        nextToken
+      }
+      messages {
+        items {
+          id
+          authorId
+          content
+          messageConversationId
+          createdAt
+          updatedAt
+        }
+        nextToken
+      }
       createdAt
       updatedAt
     }
@@ -36,9 +98,50 @@ export const getConvo = `query GetConvo($id: ID!) {
   getConvo(id: $id) {
     id
     messages {
+      items {
+        id
+        author {
+          id
+          username
+          createdAt
+          updatedAt
+        }
+        authorId
+        content
+        conversation {
+          id
+          name
+          members
+          createdAt
+          updatedAt
+        }
+        messageConversationId
+        createdAt
+        updatedAt
+      }
       nextToken
     }
     associated {
+      items {
+        id
+        user {
+          id
+          username
+          createdAt
+          updatedAt
+        }
+        convoLinkUserId
+        conversation {
+          id
+          name
+          members
+          createdAt
+          updatedAt
+        }
+        convoLinkConversationId
+        createdAt
+        updatedAt
+      }
       nextToken
     }
     name
@@ -47,29 +150,4 @@ export const getConvo = `query GetConvo($id: ID!) {
     updatedAt
   }
 }
-`;
-export const getUserAndConversations = `query getUserAndConversations($id:ID!) {
-    getUser(id:$id) {
-      id
-      username
-      conversations(limit: 100) {
-        items {
-          id
-          conversation {
-            id
-            name
-            members
-            associated {
-              items {
-                user {
-                  id
-                  username
-                }
-              }
-            }
-          }
-        }
-      }
-    }
-  }
 `;

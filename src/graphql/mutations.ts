@@ -6,9 +6,50 @@ export const createUser = `mutation CreateUser($input: CreateUserInput!) {
     id
     username
     conversations {
+      items {
+        id
+        user {
+          id
+          username
+          createdAt
+          updatedAt
+        }
+        convoLinkUserId
+        conversation {
+          id
+          name
+          members
+          createdAt
+          updatedAt
+        }
+        convoLinkConversationId
+        createdAt
+        updatedAt
+      }
       nextToken
     }
     messages {
+      items {
+        id
+        author {
+          id
+          username
+          createdAt
+          updatedAt
+        }
+        authorId
+        content
+        conversation {
+          id
+          name
+          members
+          createdAt
+          updatedAt
+        }
+        messageConversationId
+        createdAt
+        updatedAt
+      }
       nextToken
     }
     createdAt
@@ -21,9 +62,50 @@ export const updateUser = `mutation UpdateUser($input: UpdateUserInput!) {
     id
     username
     conversations {
+      items {
+        id
+        user {
+          id
+          username
+          createdAt
+          updatedAt
+        }
+        convoLinkUserId
+        conversation {
+          id
+          name
+          members
+          createdAt
+          updatedAt
+        }
+        convoLinkConversationId
+        createdAt
+        updatedAt
+      }
       nextToken
     }
     messages {
+      items {
+        id
+        author {
+          id
+          username
+          createdAt
+          updatedAt
+        }
+        authorId
+        content
+        conversation {
+          id
+          name
+          members
+          createdAt
+          updatedAt
+        }
+        messageConversationId
+        createdAt
+        updatedAt
+      }
       nextToken
     }
     createdAt
@@ -36,9 +118,50 @@ export const deleteUser = `mutation DeleteUser($input: DeleteUserInput!) {
     id
     username
     conversations {
+      items {
+        id
+        user {
+          id
+          username
+          createdAt
+          updatedAt
+        }
+        convoLinkUserId
+        conversation {
+          id
+          name
+          members
+          createdAt
+          updatedAt
+        }
+        convoLinkConversationId
+        createdAt
+        updatedAt
+      }
       nextToken
     }
     messages {
+      items {
+        id
+        author {
+          id
+          username
+          createdAt
+          updatedAt
+        }
+        authorId
+        content
+        conversation {
+          id
+          name
+          members
+          createdAt
+          updatedAt
+        }
+        messageConversationId
+        createdAt
+        updatedAt
+      }
       nextToken
     }
     createdAt
@@ -50,9 +173,50 @@ export const createConvo = `mutation CreateConvo($input: CreateConversationInput
   createConvo(input: $input) {
     id
     messages {
+      items {
+        id
+        author {
+          id
+          username
+          createdAt
+          updatedAt
+        }
+        authorId
+        content
+        conversation {
+          id
+          name
+          members
+          createdAt
+          updatedAt
+        }
+        messageConversationId
+        createdAt
+        updatedAt
+      }
       nextToken
     }
     associated {
+      items {
+        id
+        user {
+          id
+          username
+          createdAt
+          updatedAt
+        }
+        convoLinkUserId
+        conversation {
+          id
+          name
+          members
+          createdAt
+          updatedAt
+        }
+        convoLinkConversationId
+        createdAt
+        updatedAt
+      }
       nextToken
     }
     name
@@ -68,6 +232,27 @@ export const createMessage = `mutation CreateMessage($input: CreateMessageInput!
     author {
       id
       username
+      conversations {
+        items {
+          id
+          convoLinkUserId
+          convoLinkConversationId
+          createdAt
+          updatedAt
+        }
+        nextToken
+      }
+      messages {
+        items {
+          id
+          authorId
+          content
+          messageConversationId
+          createdAt
+          updatedAt
+        }
+        nextToken
+      }
       createdAt
       updatedAt
     }
@@ -75,6 +260,27 @@ export const createMessage = `mutation CreateMessage($input: CreateMessageInput!
     content
     conversation {
       id
+      messages {
+        items {
+          id
+          authorId
+          content
+          messageConversationId
+          createdAt
+          updatedAt
+        }
+        nextToken
+      }
+      associated {
+        items {
+          id
+          convoLinkUserId
+          convoLinkConversationId
+          createdAt
+          updatedAt
+        }
+        nextToken
+      }
       name
       members
       createdAt
@@ -92,6 +298,27 @@ export const updateMessage = `mutation UpdateMessage($input: UpdateMessageInput!
     author {
       id
       username
+      conversations {
+        items {
+          id
+          convoLinkUserId
+          convoLinkConversationId
+          createdAt
+          updatedAt
+        }
+        nextToken
+      }
+      messages {
+        items {
+          id
+          authorId
+          content
+          messageConversationId
+          createdAt
+          updatedAt
+        }
+        nextToken
+      }
       createdAt
       updatedAt
     }
@@ -99,6 +326,27 @@ export const updateMessage = `mutation UpdateMessage($input: UpdateMessageInput!
     content
     conversation {
       id
+      messages {
+        items {
+          id
+          authorId
+          content
+          messageConversationId
+          createdAt
+          updatedAt
+        }
+        nextToken
+      }
+      associated {
+        items {
+          id
+          convoLinkUserId
+          convoLinkConversationId
+          createdAt
+          updatedAt
+        }
+        nextToken
+      }
       name
       members
       createdAt
@@ -116,6 +364,27 @@ export const deleteMessage = `mutation DeleteMessage($input: DeleteMessageInput!
     author {
       id
       username
+      conversations {
+        items {
+          id
+          convoLinkUserId
+          convoLinkConversationId
+          createdAt
+          updatedAt
+        }
+        nextToken
+      }
+      messages {
+        items {
+          id
+          authorId
+          content
+          messageConversationId
+          createdAt
+          updatedAt
+        }
+        nextToken
+      }
       createdAt
       updatedAt
     }
@@ -123,6 +392,27 @@ export const deleteMessage = `mutation DeleteMessage($input: DeleteMessageInput!
     content
     conversation {
       id
+      messages {
+        items {
+          id
+          authorId
+          content
+          messageConversationId
+          createdAt
+          updatedAt
+        }
+        nextToken
+      }
+      associated {
+        items {
+          id
+          convoLinkUserId
+          convoLinkConversationId
+          createdAt
+          updatedAt
+        }
+        nextToken
+      }
       name
       members
       createdAt
@@ -140,12 +430,54 @@ export const createConvoLink = `mutation CreateConvoLink($input: CreateConvoLink
     user {
       id
       username
+      conversations {
+        items {
+          id
+          convoLinkUserId
+          convoLinkConversationId
+          createdAt
+          updatedAt
+        }
+        nextToken
+      }
+      messages {
+        items {
+          id
+          authorId
+          content
+          messageConversationId
+          createdAt
+          updatedAt
+        }
+        nextToken
+      }
       createdAt
       updatedAt
     }
     convoLinkUserId
     conversation {
       id
+      messages {
+        items {
+          id
+          authorId
+          content
+          messageConversationId
+          createdAt
+          updatedAt
+        }
+        nextToken
+      }
+      associated {
+        items {
+          id
+          convoLinkUserId
+          convoLinkConversationId
+          createdAt
+          updatedAt
+        }
+        nextToken
+      }
       name
       members
       createdAt
@@ -163,12 +495,54 @@ export const updateConvoLink = `mutation UpdateConvoLink($input: UpdateConvoLink
     user {
       id
       username
+      conversations {
+        items {
+          id
+          convoLinkUserId
+          convoLinkConversationId
+          createdAt
+          updatedAt
+        }
+        nextToken
+      }
+      messages {
+        items {
+          id
+          authorId
+          content
+          messageConversationId
+          createdAt
+          updatedAt
+        }
+        nextToken
+      }
       createdAt
       updatedAt
     }
     convoLinkUserId
     conversation {
       id
+      messages {
+        items {
+          id
+          authorId
+          content
+          messageConversationId
+          createdAt
+          updatedAt
+        }
+        nextToken
+      }
+      associated {
+        items {
+          id
+          convoLinkUserId
+          convoLinkConversationId
+          createdAt
+          updatedAt
+        }
+        nextToken
+      }
       name
       members
       createdAt

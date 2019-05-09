@@ -7,12 +7,54 @@ export const onCreateConvoLink = `subscription OnCreateConvoLink($convoLinkUserI
     user {
       id
       username
+      conversations {
+        items {
+          id
+          convoLinkUserId
+          convoLinkConversationId
+          createdAt
+          updatedAt
+        }
+        nextToken
+      }
+      messages {
+        items {
+          id
+          authorId
+          content
+          messageConversationId
+          createdAt
+          updatedAt
+        }
+        nextToken
+      }
       createdAt
       updatedAt
     }
     convoLinkUserId
     conversation {
       id
+      messages {
+        items {
+          id
+          authorId
+          content
+          messageConversationId
+          createdAt
+          updatedAt
+        }
+        nextToken
+      }
+      associated {
+        items {
+          id
+          convoLinkUserId
+          convoLinkConversationId
+          createdAt
+          updatedAt
+        }
+        nextToken
+      }
       name
       members
       createdAt
@@ -30,6 +72,27 @@ export const onCreateMessage = `subscription OnCreateMessage($messageConversatio
     author {
       id
       username
+      conversations {
+        items {
+          id
+          convoLinkUserId
+          convoLinkConversationId
+          createdAt
+          updatedAt
+        }
+        nextToken
+      }
+      messages {
+        items {
+          id
+          authorId
+          content
+          messageConversationId
+          createdAt
+          updatedAt
+        }
+        nextToken
+      }
       createdAt
       updatedAt
     }
@@ -37,6 +100,27 @@ export const onCreateMessage = `subscription OnCreateMessage($messageConversatio
     content
     conversation {
       id
+      messages {
+        items {
+          id
+          authorId
+          content
+          messageConversationId
+          createdAt
+          updatedAt
+        }
+        nextToken
+      }
+      associated {
+        items {
+          id
+          convoLinkUserId
+          convoLinkConversationId
+          createdAt
+          updatedAt
+        }
+        nextToken
+      }
       name
       members
       createdAt
@@ -53,9 +137,50 @@ export const onCreateUser = `subscription OnCreateUser {
     id
     username
     conversations {
+      items {
+        id
+        user {
+          id
+          username
+          createdAt
+          updatedAt
+        }
+        convoLinkUserId
+        conversation {
+          id
+          name
+          members
+          createdAt
+          updatedAt
+        }
+        convoLinkConversationId
+        createdAt
+        updatedAt
+      }
       nextToken
     }
     messages {
+      items {
+        id
+        author {
+          id
+          username
+          createdAt
+          updatedAt
+        }
+        authorId
+        content
+        conversation {
+          id
+          name
+          members
+          createdAt
+          updatedAt
+        }
+        messageConversationId
+        createdAt
+        updatedAt
+      }
       nextToken
     }
     createdAt
@@ -68,9 +193,50 @@ export const onUpdateUser = `subscription OnUpdateUser {
     id
     username
     conversations {
+      items {
+        id
+        user {
+          id
+          username
+          createdAt
+          updatedAt
+        }
+        convoLinkUserId
+        conversation {
+          id
+          name
+          members
+          createdAt
+          updatedAt
+        }
+        convoLinkConversationId
+        createdAt
+        updatedAt
+      }
       nextToken
     }
     messages {
+      items {
+        id
+        author {
+          id
+          username
+          createdAt
+          updatedAt
+        }
+        authorId
+        content
+        conversation {
+          id
+          name
+          members
+          createdAt
+          updatedAt
+        }
+        messageConversationId
+        createdAt
+        updatedAt
+      }
       nextToken
     }
     createdAt
@@ -83,9 +249,50 @@ export const onDeleteUser = `subscription OnDeleteUser {
     id
     username
     conversations {
+      items {
+        id
+        user {
+          id
+          username
+          createdAt
+          updatedAt
+        }
+        convoLinkUserId
+        conversation {
+          id
+          name
+          members
+          createdAt
+          updatedAt
+        }
+        convoLinkConversationId
+        createdAt
+        updatedAt
+      }
       nextToken
     }
     messages {
+      items {
+        id
+        author {
+          id
+          username
+          createdAt
+          updatedAt
+        }
+        authorId
+        content
+        conversation {
+          id
+          name
+          members
+          createdAt
+          updatedAt
+        }
+        messageConversationId
+        createdAt
+        updatedAt
+      }
       nextToken
     }
     createdAt

@@ -12,7 +12,7 @@ projects:
         generatedFileName: src/API.ts
         docsFilePath: src/graphql
         region: ap-northeast-1
-        maxDepth: 2
+        maxDepth: 4
       endpoints:
         prod: >-
           https://qxmdtsfhwrb45kdwdcevpcrsky.appsync-api.ap-northeast-1.amazonaws.com/graphql
