@@ -42,6 +42,9 @@ import { authModule } from "@/store/modules/auth";
         };
       },
       update: data => {
+        if (data.getConvo === undefined) {
+          return [];
+        }
         return data.getConvo.messages.items;
       }
     }

@@ -39,6 +39,9 @@ import { authModule } from "@/store/modules/auth";
         return { id: this.username };
       },
       update: data => {
+        if (data.getUser === undefined) {
+          return [];
+        }
         return data.getUser.conversations.items;
       }
     }

@@ -96,9 +96,7 @@ export default class Login extends Vue {
         query: gql(getUser),
         variables: { id }
       })
-      .catch(err => {
-        console.log(err);
-      });
+      .catch(() => {});
     if (
       response !== undefined &&
       response instanceof Object &&
