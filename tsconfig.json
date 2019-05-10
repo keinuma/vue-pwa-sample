@@ -32,7 +32,9 @@
       "dom",
       "dom.iterable",
       "scripthost"
-    ]
+    ],
+    // TODO https://github.com/Akryum/vue-apollo/issues/577
+    "skipLibCheck": true
   },
   "include": [
     "src/**/*.ts",
