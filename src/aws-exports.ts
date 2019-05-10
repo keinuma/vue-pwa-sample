@@ -17,8 +17,8 @@ const awsmobile = {
       "profile",
       "aws.cognito.signin.user.admin"
     ],
-    redirectSignIn: `${process.env.VUE_APP_DOMAIN}/login/`,
-    redirectSignOut: `${process.env.VUE_APP_DOMAIN}/logout/`,
+    redirectSignIn: `${process.env.BASE_URL}/login/`,
+    redirectSignOut: `${process.env.BASE_URL}/logout/`,
     responseType: "code"
   },
   federationTarget: "COGNITO_USER_POOLS",
