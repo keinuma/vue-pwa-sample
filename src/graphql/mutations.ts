@@ -440,34 +440,12 @@ export const createConvoLink = `mutation CreateConvoLink($input: CreateConvoLink
         }
         nextToken
       }
-      messages {
-        items {
-          id
-          authorId
-          content
-          messageConversationId
-          createdAt
-          updatedAt
-        }
-        nextToken
-      }
       createdAt
       updatedAt
     }
     convoLinkUserId
     conversation {
       id
-      messages {
-        items {
-          id
-          authorId
-          content
-          messageConversationId
-          createdAt
-          updatedAt
-        }
-        nextToken
-      }
       associated {
         items {
           id

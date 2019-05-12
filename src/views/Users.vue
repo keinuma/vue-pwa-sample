@@ -5,7 +5,7 @@
         <div class="heading">ユーザー一覧</div>
         <div class="user-container">
           <div
-            @click="onClickCheckConversion(user)"
+            @click="onClickUser(user)"
             v-for="user in filteredUsers"
             :key="user.id"
             class="user"
@@ -100,16 +100,24 @@ export default class Users extends Vue {
     });
   }
 
-  onClickCheckConversion(user) {
+  onClickUser(user) {
     if (user.conversations.items.length === 0) {
       this.isModal = true;
       this.selectedUser = user;
-    } else {
-      this.$router.push({
-        name: "convo",
-        params: { id: user.conversations.items[0].convoLinkConversationId }
-      });
+      return;
     }
+    const conversations = user.conversations.items.filter(item => {
+      return item.conversation.members.includes(this.username);
+    });
+    if (conversations.length === 0) {
+      this.isModal = true;
+      this.selectedUser = user;
+      return;
+    }
+    this.$router.push({
+      name: "convo",
+      params: { id: conversations[0].convoLinkConversationId }
+    });
   }
   closeModal() {
     this.isModal = false;
@@ -141,6 +149,10 @@ export default class Users extends Vue {
     await this.$apollo.mutate({
       mutation: gql(createConvoLink),
       variables: { input: relation2 }
+    });
+    this.$router.push({
+      name: "convo",
+      params: { id: convoLinkConversationId }
     });
   }
 }
