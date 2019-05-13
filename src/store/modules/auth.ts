@@ -26,14 +26,14 @@ class Auth extends VuexModule implements IAuthState {
 
   get email(): string {
     if (this.currentUser !== null) {
-      return this.currentUser.email;
+      return this.currentUser.attributes.email;
     }
     return null;
   }
 
   get nickname(): string {
     if (this.currentUser !== null) {
-      return this.currentUser.nickname;
+      return this.currentUser.attributes.nickname;
     }
     return null;
   }
