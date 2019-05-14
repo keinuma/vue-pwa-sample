@@ -12,11 +12,6 @@ export default new Router({
       redirect: "/login"
     },
     {
-      path: "/index.html",
-      alias: "/users",
-      component: () => import("@/views/Users.vue")
-    },
-    {
       path: "/signUp",
       name: "signUp",
       component: () => import("@/views/SignUp.vue")
