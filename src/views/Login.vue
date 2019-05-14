@@ -73,7 +73,9 @@ export default class Login extends Vue {
           this.$router.push("/users");
         }
       })
-      .catch();
+      .catch(() => {
+        console.log();
+      });
   }
 
   onClickLogin() {
