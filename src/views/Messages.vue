@@ -28,6 +28,8 @@
 <script lang="ts">
 import gql from "graphql-tag";
 import { Vue, Component } from "vue-property-decorator";
+import { buildMutation } from "aws-appsync";
+import { client } from "@/main";
 import { getConvo } from "@/graphql/queries";
 import { createMessage } from "@/graphql/mutations";
 import { authModule } from "@/store/modules/auth";
@@ -71,16 +73,33 @@ export default class Messages extends Vue {
 
   async sendMessage(): Promise<any> {
     if (this.content !== "") {
-      await this.$apollo.mutate({
-        mutation: gql(createMessage),
-        variables: {
-          input: {
-            authorId: this.username,
-            content: this.content,
-            messageConversationId: this.$route.params.id
-          }
-        }
-      });
+      await this.$apollo.mutate(
+        buildMutation(
+          client,
+          gql(createMessage),
+          {
+            inputType: gql(`
+              input CreateMessageInput {
+                id: ID
+                authorId: String
+                content: String!
+                messageConversationId: ID!
+                createdAt: String
+                updatedAt: String
+              }
+            `),
+            variables: {
+              input: {
+                authorId: this.username,
+                content: this.content,
+                messageConversationId: this.$route.params.id
+              }
+            }
+          },
+          _variables => [gql(getConvo)],
+          "Message"
+        )
+      );
       this.content = "";
     }
   }

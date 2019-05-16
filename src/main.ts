@@ -35,11 +35,12 @@ import AWSAppSyncClient from "aws-appsync";
 import VueApollo from "vue-apollo";
 import AWSConfig from "./aws-exports";
 
-const client = new AWSAppSyncClient({
+export const client = new AWSAppSyncClient({
   url: AWSConfig.aws_appsync_graphqlEndpoint,
   region: AWSConfig.aws_appsync_region,
+  disableOffline: false,
   auth: {
-    type: AWSConfig.aws_appsync_authenticationType,
+    type: "AMAZON_COGNITO_USER_POOLS",
     jwtToken: async () =>
       (await AmplifyModules.Auth.currentSession()).getIdToken().getJwtToken()
   }
