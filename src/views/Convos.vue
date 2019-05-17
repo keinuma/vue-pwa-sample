@@ -34,16 +34,25 @@ import { authModule } from "@/store/modules/auth";
       query: () => gql(getUserAndConversations),
       variables() {
         if (this.username === null) {
-          return;
+          return { id: "" };
         }
         return { id: this.username };
       },
       update: data => {
-        if (data.getUser === undefined) {
+        if (data.getUser === undefined || data.getUser === null) {
           return [];
         }
         return data.getUser.conversations.items;
-      }
+      },
+      error(error) {
+        if (
+          error.networkError !== undefined &&
+          error.networkError.statusCode === 401
+        ) {
+          this.$router.push("/login");
+        }
+      },
+      fetchPolicy: "cache-and-network"
     }
   }
 })
