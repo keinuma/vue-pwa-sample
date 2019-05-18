@@ -48,7 +48,8 @@ import { authModule } from "@/store/modules/auth";
           return [];
         }
         return data.getConvo.messages.items;
-      }
+      },
+      fetchPolicy: "cache-and-network"
     }
   }
 })
