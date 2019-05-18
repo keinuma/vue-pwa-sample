@@ -1,11 +1,12 @@
 <template>
   <div>
-    <div class="message-container">
-      <div :key="message.id" v-for="message in messages">
+    <div v-if="messages" @scroll="fetchMore" class="message-container">
+      <div :key="message.id" v-for="message in messages.items">
         <p class="message" :class="{ 'sender-message': isSenderOwn(message) }">
           {{ message.content }}
         </p>
       </div>
+      <div v-if="isLoading" class="loading"></div>
       <div class="scroller"></div>
     </div>
     <div class="input-container">
@@ -43,19 +44,20 @@ import { authModule } from "@/store/modules/auth";
           id: this.$route.params.id
         };
       },
-      update: data => {
+      update(data) {
         if (data.getConvo === undefined) {
           return [];
         }
-        return data.getConvo.messages.items;
+        this.nextToken = data.getConvo.messages.nextToken;
+        return data.getConvo.messages;
       },
       fetchPolicy: "cache-and-network"
     }
   }
 })
 export default class Messages extends Vue {
-  messages: string[] = [];
   content: string = "";
+  nextToken: string | null = "";
   authModule = authModule;
 
   created(): void {
@@ -70,6 +72,37 @@ export default class Messages extends Vue {
 
   get nickname() {
     return this.authModule.nickname;
+  }
+
+  get isLoading() {
+    if (this.$apollo.queries.messages === null) {
+      return false;
+    }
+    return this.$apollo.queries.messages.loading;
+  }
+
+  async fetchMore(event) {
+    const presentHeight = event.target.scrollTop + event.target.offsetHeight;
+    const contentHeight = event.target.scrollHeight;
+    if (presentHeight >= contentHeight) {
+      this.$apollo.queries.messages.fetchMore({
+        variables: {
+          id: this.$route.params.id,
+          nextToken: this.messages.nextToken
+        },
+        updateQuery: (previousResult, { fetchMoreResult }) => {
+          previousResult.getConvo.messages.items = [
+            ...previousResult.getConvo.messages.items,
+            ...fetchMoreResult.getConvo.messages.items
+          ];
+          previousResult.getConvo.messages.nextToken =
+            fetchMoreResult.getConvo.messages.nextToken;
+          return {
+            getConvo: previousResult.getConvo
+          };
+        }
+      });
+    }
   }
 
   async sendMessage(): Promise<any> {
@@ -149,5 +182,23 @@ export default class Messages extends Vue {
   .send-icon {
     vertical-align: -0.3em;
   }
+}
+@keyframes donut-spin {
+  0% {
+    transform: rotate(0deg);
+  }
+  100% {
+    transform: rotate(360deg);
+  }
+}
+.loading {
+  display: flex;
+  margin: 10px auto;
+  border: 4px solid rgba(0, 0, 0, 0.1);
+  border-left-color: $base-color;
+  border-radius: 50%;
+  width: 30px;
+  height: 30px;
+  animation: donut-spin 1.2s linear infinite;
 }
 </style>
