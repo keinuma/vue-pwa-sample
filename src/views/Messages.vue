@@ -56,6 +56,7 @@ import { authModule } from "@/store/modules/auth";
   }
 })
 export default class Messages extends Vue {
+  messages;
   content: string = "";
   nextToken: string | null = "";
   authModule = authModule;
