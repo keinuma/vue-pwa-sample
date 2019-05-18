@@ -40,7 +40,7 @@ export const client = new AWSAppSyncClient({
   region: AWSConfig.aws_appsync_region,
   disableOffline: false,
   auth: {
-    type: AWSConfig.aws_appsync_authenticationType,
+    type: "AMAZON_COGNITO_USER_POOLS",
     jwtToken: async () =>
       (await AmplifyModules.Auth.currentSession()).getIdToken().getJwtToken()
   }
