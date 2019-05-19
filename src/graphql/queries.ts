@@ -71,6 +71,13 @@ export const listUsers = `query ListUsers(
           id
           convoLinkUserId
           convoLinkConversationId
+          conversation {
+            id
+            name
+            members
+            createdAt
+            updatedAt
+          }
           createdAt
           updatedAt
         }
