@@ -71,13 +71,6 @@ export const listUsers = `query ListUsers(
           id
           convoLinkUserId
           convoLinkConversationId
-          conversation {
-            id
-            name
-            members
-            createdAt
-            updatedAt
-          }
           createdAt
           updatedAt
         }
@@ -171,4 +164,47 @@ export const getUserAndConversations = `query getUserAndConversations($id:ID!) {
       }
     }
   }
+`;
+export const listMessages = `query ListMessages(
+  $filter: ModelMessageFilterInput
+  $limit: Int
+  $nextToken: String
+) {
+  listMessages(filter: $filter, limit: $limit, nextToken: $nextToken) {
+    items {
+      id
+      author {
+        id
+        username
+        conversations {
+          nextToken
+        }
+        messages {
+          nextToken
+        }
+        createdAt
+        updatedAt
+      }
+      authorId
+      content
+      conversation {
+        id
+        messages {
+          nextToken
+        }
+        associated {
+          nextToken
+        }
+        name
+        members
+        createdAt
+        updatedAt
+      }
+      messageConversationId
+      createdAt
+      updatedAt
+    }
+    nextToken
+  }
+}
 `;

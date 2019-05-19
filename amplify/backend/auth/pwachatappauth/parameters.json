@@ -1,0 +1,83 @@
+{
+    "identityPoolName": "pwa_sample_appfcb63f42_identitypool_fcb63f42",
+    "allowUnauthenticatedIdentities": false,
+    "lambdaLogPolicy": "pwachatappauth_lambda_log_policy",
+    "openIdLambdaRoleName": "pwachatappauth_openid_lambda_role",
+    "openIdRolePolicy": "pwachatappauth_openid_pass_role_policy",
+    "openIdLambdaIAMPolicy": "pwachatappauth_openid_lambda_iam_policy",
+    "openIdLogPolicy": "pwachatappauth_openid_lambda_log_policy",
+    "userPoolName": "pwa_chat_app_auth_user_pool",
+    "autoVerifiedAttributes": [
+        "email"
+    ],
+    "mfaConfiguration": "OFF",
+    "mfaTypes": [
+        "SMS Text Message"
+    ],
+    "roleName": "pwachatappauth_sns-role",
+    "roleExternalId": "pwachatappauth_role_external_id",
+    "policyName": "pwachatappauth-sns-policy",
+    "smsAuthenticationMessage": "Your authentication code is {####}",
+    "smsVerificationMessage": "Your verification code is {####}",
+    "emailVerificationSubject": "{####}",
+    "emailVerificationMessage": "{####}",
+    "defaultPasswordPolicy": false,
+    "passwordPolicyMinLength": 8,
+    "passwordPolicyCharacters": [
+        "Requires Lowercase",
+        "Requires Uppercase",
+        "Requires Numbers",
+        "Requires Symbols"
+    ],
+    "requiredAttributes": [
+        "email",
+        "nickname"
+    ],
+    "userpoolClientName": "pwachatappauth_app_client",
+    "userpoolClientGenerateSecret": true,
+    "userpoolClientRefreshTokenValidity": 30,
+    "userpoolClientWriteAttributes": [
+        "email"
+    ],
+    "userpoolClientReadAttributes": [
+        "email"
+    ],
+    "mfaLambdaRole": "pwachatappauth_totp_lambda_role",
+    "mfaLambdaLogPolicy": "pwachatappauth_totp_lambda_log_policy",
+    "mfaPassRolePolicy": "pwachatappauth_totp_pass_role_policy",
+    "mfaLambdaIAMPolicy": "pwachatappauth_totp_lambda_iam_policy",
+    "userpoolClientLambdaRole": "pwachatappauth_userpoolclient_lambda_role",
+    "userpoolClientLogPolicy": "pwachatappauth_userpoolclient_lambda_log_policy",
+    "userpoolClientLambdaPolicy": "pwachatappauth_userpoolclient_lambda_iam_policy",
+    "userpoolClientSetAttributes": false,
+    "useDefault": "manual",
+    "authSelections": "identityPoolAndUserPool",
+    "resourceName": "pwachatappauth",
+    "thirdPartyAuth": false,
+    "usernameAttributes": [
+        "email"
+    ],
+    "hostedUI": true,
+    "hostedUIDomainName": "pwachatapp",
+    "authProvidersUserPool": [],
+    "hostedUIProviderMeta": "[]",
+    "oAuthMetadata": "{\"AllowedOAuthFlows\":[\"implicit\"],\"AllowedOAuthScopes\":[\"phone\",\"email\",\"openid\",\"profile\",\"aws.cognito.signin.user.admin\"],\"CallbackURLs\":[\"https://master.d1dunee1esc3vj.amplifyapp.com/login/\"],\"LogoutURLs\":[\"https://master.d1dunee1esc3vj.amplifyapp.com/logout/\"]}",
+    "authRoleName": {
+        "Ref": "AuthRoleName"
+    },
+    "unauthRoleName": {
+        "Ref": "UnauthRoleName"
+    },
+    "authRoleArn": {
+        "Fn::GetAtt": [
+            "AuthRole",
+            "Arn"
+        ]
+    },
+    "unauthRoleArn": {
+        "Fn::GetAtt": [
+            "UnauthRole",
+            "Arn"
+        ]
+    }
+}

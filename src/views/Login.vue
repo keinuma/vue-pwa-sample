@@ -86,6 +86,7 @@ export default class Login extends Vue {
       })
       .then(() => {
         if (this.username) {
+          this.checkIfUserExists(this.username).catch();
           this.$router.push("/users");
         }
       })

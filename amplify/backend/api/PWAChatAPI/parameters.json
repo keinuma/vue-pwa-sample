@@ -1,0 +1,10 @@
+{
+    "AppSyncApiName": "PWAChatAPI",
+    "DynamoDBBillingMode": "PAY_PER_REQUEST",
+    "AuthCognitoUserPoolId": {
+        "Fn::GetAtt": [
+            "authpwachatappauth",
+            "Outputs.UserPoolId"
+        ]
+    }
+}
