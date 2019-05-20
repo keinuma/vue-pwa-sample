@@ -1,12 +1,47 @@
 import Vue from "vue";
 import Vuex from "vuex";
-
-import { IAuthState } from "@/store/modules/auth";
+import * as types from "@/store/mutation-types";
 
 Vue.use(Vuex);
 
-export interface State {
-  auth: IAuthState;
+interface RootState {
+  error: {
+    code: string;
+    message: string;
+  };
+  loading: boolean;
 }
 
-export default new Vuex.Store<State>({});
+const initialState: RootState = {
+  error: {
+    code: "",
+    message: ""
+  },
+  loading: false
+};
+
+export default new Vuex.Store({
+  state: {
+    error: initialState.error,
+    loading: initialState.loading
+  },
+  mutations: {
+    [types.SET_ERROR](state, error): void {
+      state.error = error;
+    },
+    [types.CLEAR_ERROR](state): void {
+      state.error = initialState.error;
+    },
+    [types.SHOW_LOADING](state): void {
+      state.loading = true;
+    },
+    [types.HIDE_LOADING](state): void {
+      state.loading = false;
+    }
+  },
+  actions: {
+    setError({ commit }, { code, message }) {
+      commit(types.SET_ERROR, { code, message });
+    }
+  }
+});
