@@ -44,17 +44,22 @@
         </div>
       </section>
     </main>
+    <loading :is-loading-state="isLoading"></loading>
   </div>
 </template>
 
 <script lang="ts">
 import { Vue, Component } from "vue-property-decorator";
+import Loading from "@/components/Loading.vue";
+import * as types from "@/store/mutation-types";
 import gql from "graphql-tag";
 import { getUser } from "@/graphql/queries";
 import { createUser } from "@/graphql/mutations";
 import { authModule } from "@/store/modules/auth";
 
-@Component({})
+@Component({
+  components: { Loading }
+})
 export default class Login extends Vue {
   email: string = "";
   password = "";
@@ -72,20 +77,22 @@ export default class Login extends Vue {
     return this.$store.state.error.message;
   }
 
+  get isLoading() {
+    return this.$store.state.loading;
+  }
+
   created() {
-    authModule
-      .getCurrentUser()
-      .then(() => {
-        if (this.username) {
-          this.$router.push("/users");
-        }
-      })
-      .catch(() => {
-        console.log();
-      });
+    this.$store.commit(types.SHOW_LOADING, {}, { root: true });
+    authModule.getCurrentUser().then(() => {
+      if (this.username) {
+        this.$router.push("/users");
+      }
+    });
+    this.$store.commit(types.HIDE_LOADING, {}, { root: true });
   }
 
   onClickLogin() {
+    this.$store.commit(types.SHOW_LOADING, {}, { root: true });
     authModule
       .login({
         email: this.email,
@@ -98,6 +105,7 @@ export default class Login extends Vue {
         }
       })
       .catch();
+    this.$store.commit(types.HIDE_LOADING, {}, { root: true });
   }
 
   async checkIfUserExists(id: string) {
