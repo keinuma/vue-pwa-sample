@@ -46,21 +46,32 @@ class Auth extends VuexModule implements IAuthState {
 
   @Action
   public async getCurrentUser() {
-    const user = await AmplifyAuth.currentAuthenticatedUser().catch(err => {
-      throw err;
+    const user = await AuthService.getCurrentUser().catch(e => {
+      this.context.commit(
+        types.SET_ERROR,
+        {
+          code: e.code,
+          message: e.message
+        },
+        { root: true }
+      );
+      return null;
     });
     this.context.commit(types.SET_CURRENT_USER, user);
   }
 
   @Action
   public async signUp({ email, password }) {
-    const user = await AmplifyAuth.signUp({
-      username: email,
-      password: password,
-      attributes: {
-        email,
-        nickname: email
-      }
+    const user = await AuthService.signUp(email, password).catch(e => {
+      this.context.commit(
+        types.SET_ERROR,
+        {
+          code: e.code,
+          message: e.message
+        },
+        { root: true }
+      );
+      return null;
     });
     this.context.commit(types.SET_CURRENT_USER, user);
   }
@@ -83,8 +94,15 @@ class Auth extends VuexModule implements IAuthState {
 
   @Action
   public async logout() {
-    await AmplifyAuth.signOut().catch(error => {
-      throw error;
+    await AuthService.logout().catch(e => {
+      this.context.commit(
+        types.SET_ERROR,
+        {
+          code: e.code,
+          message: e.message
+        },
+        { root: true }
+      );
     });
     this.context.commit(types.SET_CURRENT_USER, null);
   }
