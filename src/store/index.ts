@@ -38,10 +38,5 @@ export default new Vuex.Store({
     [types.HIDE_LOADING](state): void {
       state.loading = false;
     }
-  },
-  actions: {
-    setError({ commit }, { code, message }) {
-      commit(types.SET_ERROR, { code, message });
-    }
   }
 });

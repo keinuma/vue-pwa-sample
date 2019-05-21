@@ -1,5 +1,5 @@
 import { Auth as AmplifyAuth } from "aws-amplify";
-import AuthInfra from "@/infra/api/auth";
+import AuthService from "@/service/auth";
 import * as types from "@/store/mutation-types";
 import {
   Module,
@@ -67,8 +67,15 @@ class Auth extends VuexModule implements IAuthState {
 
   @Action
   public async login({ email, password }) {
-    const user = await AuthInfra.login(email, password).catch(e => {
-      console.log(e);
+    const user = await AuthService.login(email, password).catch(e => {
+      this.context.commit(
+        types.SET_ERROR,
+        {
+          code: e.code,
+          message: e.message
+        },
+        { root: true }
+      );
       return null;
     });
     this.context.commit(types.SET_CURRENT_USER, user);

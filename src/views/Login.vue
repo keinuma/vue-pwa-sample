@@ -21,6 +21,9 @@
               placeholder="パスワードを入力してください"
             />
           </div>
+          <div v-if="errorMessage !== ''" class="error">
+            {{ errorMessage }}
+          </div>
           <div class="mod-form-item">
             <button class="form-submit mod-submit" @click="onClickLogin">
               ログイン
@@ -63,6 +66,10 @@ export default class Login extends Vue {
 
   get nickname() {
     return this.authModule.nickname;
+  }
+
+  get errorMessage() {
+    return this.$store.state.error.message;
   }
 
   created() {
@@ -128,5 +135,11 @@ export default class Login extends Vue {
 .form-submit {
   background-color: #daa520;
   color: white;
+}
+
+.error {
+  color: $base-warning-color;
+  align-self: center;
+  margin-bottom: 10px;
 }
 </style>

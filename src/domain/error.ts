@@ -1,7 +1,7 @@
-class AppError extends Error {
+export default class AppError extends Error {
   code: string = "";
 
-  constructor(code: string, message: string, ...params) {
+  constructor(code: string = "", message: string = "", ...params) {
     super(...params);
 
     if (Error.captureStackTrace) {
