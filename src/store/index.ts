@@ -38,5 +38,11 @@ export default new Vuex.Store({
     [types.HIDE_LOADING](state): void {
       state.loading = false;
     }
+  },
+  actions: {
+    setInitial({ commit }) {
+      commit(types.CLEAR_ERROR);
+      commit(types.HIDE_LOADING);
+    }
   }
 });

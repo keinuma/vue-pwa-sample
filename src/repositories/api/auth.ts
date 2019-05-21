@@ -11,7 +11,7 @@ export default {
       }
     }).catch(e => {
       throw e;
-    })
+    });
   },
   login: async (email: string, password: string) => {
     return await Auth.signIn({
@@ -24,11 +24,11 @@ export default {
   logout: async () => {
     return await Auth.signOut().catch(e => {
       throw e;
-    })
+    });
   },
   getCurrentUser: async () => {
     return await Auth.currentAuthenticatedUser().catch(e => {
       throw e;
-    })
+    });
   }
 };

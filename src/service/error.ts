@@ -23,4 +23,4 @@ export default error => {
     "InternalErrorException",
     ErrorMessageForUser.get("InternalErrorException")
   );
-}
+};
